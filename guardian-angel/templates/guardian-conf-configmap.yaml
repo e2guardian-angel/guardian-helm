@@ -1,0 +1,53 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: guardian-conf
+data:
+  guardian.json: 
+    {
+      "localNetwork": "{{ .Values.localNetwork }}",
+      "squidConfigDir": "{{ .Values.squidConfigDir }}",
+      "proxyPort": {{ .Values.squidInternalPort }},
+      "e2guardianConfigDir": "{{ .Values.e2guardianConfigDir }}",
+      "httpsEnabled": {{ .Values.httpsEnabled }},
+      "transparent": {{ .Values.transparent }},
+      "sslBumpEnabled": {{ .Values.decryptHTTPS }},
+      "caInfo": {
+        "country": "{{ .Values.caCountry }}",
+        "state": "{{ .Values.caState }}",
+        "city": "{{ .Values.caCity }}",
+        "organization": "{{ .Values.caOrg }}",
+        "organizationalUnit": "{{ .Values.caOrgUnit }}",
+        "commonName": "{{ .Values.caCommonName }}",
+        "email": "{{ .Values.caEmail }}",
+        "days": {{ .Values.caValidDays }}
+      },
+      "redisConfig": {
+        "host": "{{ .Values.redisHost }}",
+        "port": {{ .Values.redisPort }}
+      },
+      "cacheConfig": {
+        "ttl": {{ .Values.cacheTTL }},
+        "maxKeys": {{ .Values.maxKeys }}
+      },
+      "gatewayIP": "{{ .Values.gatewayIP }}",
+      "namespace": "{{ .Values.namespace }}",
+      "proxyHost": "{{ .Values.proxyHostName }}",
+      "networkConfig": {
+        "localTransparent": {{ .Values.localTransparent }}
+      },
+      "httpPort": {{ .Values.internalHttpPort }},
+      "httpsPort": {{ .Values.internalHttpsPort }},
+      "safeSearchEnforced": {{ .Values.safeSearchEnforced }},
+      "aclDatabaseFile": "{{ .Values.aclDatabaseFile }}",
+      "allowRules": {{ .Values.allowRules }},
+      "authDb": {
+        "host": "{{ .Values.authDbHost }}"
+      },
+      "decryptRules": {{ .Values.decryptRules }},
+      "helper": {
+        "host": "{{ .Values.lookupHostName }}",
+        "port": {{ .Values.internalHttpPort }}
+      },
+      "e2guardianConf": {{ .Values.e2guardianConfig }}
+    }

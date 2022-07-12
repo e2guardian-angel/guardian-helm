@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dns-reverse
+  labels:
+    app: dns-reverse
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dns-reverse
+  template:
+    metadata:
+      labels:
+        app: dns-reverse
+    spec:
+      containers:
+        - name: unbound
+          image: 'jusschwa/unbound-reversecache:latest'
+          ports:
+            - containerPort: {{ .Values.publicDnsPort }}
+              protocol: UDP
+            - containerPort: {{ .Values.publicDnsPort }}
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: redis-pass
+          volumeMounts:
+            - mountPath: /opt/guardian
+              name: guardian-conf-volume
+      volumes:
+        - name: guardian-conf-volume
+          configMap:
+            name: guardian-conf

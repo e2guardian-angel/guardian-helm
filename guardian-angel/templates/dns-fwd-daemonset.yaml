@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dns-fwd
+  labels:
+    app: dns-fwd
+spec:
+  selector:
+    matchLabels:
+      app: dns-fwd
+  template:
+    metadata:
+      labels:
+        app: dns-fwd
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: unbound
+          image: 'jusschwa/unbound-reversecache:latest'
+          ports:
+            - containerPort: {{ .Values.publicDnsPort }}
+              protocol: UDP
+            - containerPort: {{ .Values.publicDnsPort }}
+              protocol: TCP
+          env:
+            - name: FORWARDER
+              value: 'true'
+          volumeMounts:
+            - mountPath: /opt/guardian
+              name: guardian-conf-volume
+      volumes:
+        - name: guardian-conf-volume
+          configMap:
+            name: guardian-conf

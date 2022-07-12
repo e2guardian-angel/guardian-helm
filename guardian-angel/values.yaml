@@ -1,0 +1,82 @@
+# Default values for guardian-angel.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# guardian-angel configurables
+
+# Network
+localNetwork: '192.168.4.0/24'
+gatewayIP: '192.168.4.1'
+localTransparent: false # Transparently proxy traffic coming from this machine; used for local setup
+
+# Lookup service
+lookupHostName: 'guardian-angel'
+internalHttpPort: 3000
+internalHttpsPort: 3443
+safeSearchEnforced: false
+aclDatabaseFile: '/opt/guardian/acl/acls.db'
+
+# Squid
+proxyHostName: 'webfilter'
+squidInternalPort: 3128
+squidPublicPort: 30128
+icapInternalPort: 1344
+squidConfigDir: '/etc/squid'
+httpsEnabled: false
+transparent: false
+decryptHTTPS: false
+allowRules: |
+  [
+    {
+      "category": "all",
+      "allow": true
+    }
+  ]
+decryptRules: |
+  [
+    {
+      "category": "all",
+      "decrypt": false
+    }
+  ]
+
+# e2guardian
+e2guardianConfigDir: '/opt/etc/e2guardian'
+e2guardianConfig: |
+  {
+    "phraseLists": [],
+    "siteLists": [],
+    "regexpurllists": [],
+    "mimetypelists": [],
+    "extensionslists": []
+  }
+
+# DNS
+publicDnsPort: 9053
+reverseDnsPort: 53
+
+# Postgres
+authDbHost: 'auth-db'
+
+# CA cert info
+caCountry: 'US'
+caState: 'TX'
+caCity: 'Austin'
+caOrg: 'GuardianAngel'
+caOrgUnit: 'RootCerts'
+caCommonName: 'guardian.angel'
+caEmail: 'guardian.angel@example.com'
+caValidDays: 3650
+
+# Redis config
+redisHost: 'redis'
+redisPort: 6379
+
+# Cache config
+cacheTTL: 90
+maxKeys: 8192
+
+# Kubernetes-related
+namespace: 'default'
+aclVolumeSize: 4Gi
+

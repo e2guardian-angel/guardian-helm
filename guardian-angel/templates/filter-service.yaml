@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webfilter
+  labels:
+    app: webfilter
+spec:
+  type: NodePort
+  selector:
+    app: webfilter
+  ports:
+    - name: squid
+      protocol: TCP
+      port: {{ .Values.squidInternalPort }}
+      targetPort: {{ .Values.squidInternalPort }}
+      nodePort: {{ .Values.squidPublicPort }}
