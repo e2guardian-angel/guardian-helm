@@ -26,13 +26,13 @@ squidConfigDir: '/etc/squid'
 httpsEnabled: false
 transparent: false
 decryptHTTPS: false
-allowRules: [{"category": "all","allow": true}]
-decryptRules: [{"category": "all","decrypt": false}]
+allowRules: '[{"category": "all","allow": true}]'
+decryptRules: '[{"category": "all","decrypt": false}]'
 
 # e2guardian
 e2guardianConfigDir: '/opt/etc/e2guardian'
 phraseDir: '/opt/phrases'
-e2guardianConfig: {"phraseLists": [],"siteLists": [],"regexpurllists": [],"mimetypelists": [],"extensionslists": []}
+e2guardianConfig: '{"phraseLists": [],"siteLists": [],"regexpurllists": [],"mimetypelists": [],"extensionslists": []}'
 
 # DNS
 publicDnsPort: 9053
