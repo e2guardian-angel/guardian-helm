@@ -22,9 +22,9 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.guardianConfigDir }}
               name: guardian-conf-volume
-            - mountPath: {{ .Values.squidConfigDir }}/ssl
+{{- if eq .Values.decryptHTTPS true }}
+	    - mountPath: {{ .Values.squidConfigDir }}/ssl
               name: guardian-tls-volume
-        {{- if eq .Values.decryptHTTPS true }}
         - name: e2guardian
           image: 'jusschwa/e2guardian-icap:latest'
           ports:
@@ -34,16 +34,16 @@ spec:
               name: guardian-conf-volume
             - mountPath: {{ .Values.phraseDir }}
               name: guardian-phrases
-        {{- end }}
+{{- end }}
       volumes:
         - name: guardian-conf-volume
           configMap:
             name: guardian-conf
-        {{- if eq .Values.decryptHTTPS true }}
+{{- if eq .Values.decryptHTTPS true }}
         - name: guardian-tls-volume
           secret:
             secretName: guardian-tls
-        {{- end }}
+{{- end }}
         - name: guardian-phrases
           persistentVolumeClaim:
             claimName: phrases-pvc
