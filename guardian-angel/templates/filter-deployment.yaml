@@ -24,6 +24,7 @@ spec:
               name: guardian-conf-volume
             - mountPath: {{ .Values.squidConfigDir }}/ssl
               name: guardian-tls-volume
+        {{- if eq .Values.decryptHTTPS true }}
         - name: e2guardian
           image: 'jusschwa/e2guardian-icap:latest'
           ports:
@@ -33,6 +34,7 @@ spec:
               name: guardian-conf-volume
             - mountPath: {{ .Values.phraseDir }}
               name: guardian-phrases
+        {{- end }}
       volumes:
         - name: guardian-conf-volume
           configMap:
