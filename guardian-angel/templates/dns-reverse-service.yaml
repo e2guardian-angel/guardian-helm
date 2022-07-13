@@ -12,8 +12,8 @@ spec:
     - name: dns-tcp
       protocol: TCP
       port: {{ .Values.reverseDnsPort }}
-      targetPort: 9053
+      targetPort: {{ .Values.publicDnsPort }}
     - name: dns-udp
       protocol: UDP
       port: {{ .Values.reverseDnsPort }}
-      targetPort: 9053
+      targetPort: {{ .Values.publicDnsPort }}

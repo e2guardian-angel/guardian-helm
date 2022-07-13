@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guardian-angel
+  labels:
+    app: guardian-angel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guardian-angel
+  template:
+    metadata:
+      labels:
+        app: guardian-angel
+    spec:
+      containers:
+        - name: guardian-angel
+          image: 'jusschwa/guardian-angel:latest'
+          ports:
+            - containerPort: {{ .Values.internalHttpPort }}
+          volumeMounts:
+            - mountPath: {{ .Values.guardianConfigDir }}/conf
+              name: guardian-conf-volume
+          envFrom:
+            - secretRef:
+                name: redis-pass
+            - secretRef:
+                name: guardian-db-creds
+      volumes:
+        - name: guardian-conf-volume
+          configMap:
+            name: guardian-conf

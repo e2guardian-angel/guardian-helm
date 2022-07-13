@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: acl-db-pvc
+  name: phrases-pvc
 spec:
-  volumeName: acl-db
+  volumeName: phrases
   storageClassName: local-storage
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.aclVolumeSize }}
+      storage: {{ .Values.phraseVolumeSize }}
