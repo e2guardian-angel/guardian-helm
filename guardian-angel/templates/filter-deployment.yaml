@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webfilter
 spec:
-  replicas: 1
+  replicas: {{ .Values.filterReplicas }}
   selector:
     matchLabels:
       app: webfilter

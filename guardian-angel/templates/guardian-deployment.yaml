@@ -5,7 +5,7 @@ metadata:
   labels:
     app: guardian-angel
 spec:
-  replicas: 1
+  replicas: {{ .Values.guardianReplicas }}
   selector:
     matchLabels:
       app: guardian-angel

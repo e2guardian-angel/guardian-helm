@@ -5,7 +5,7 @@ metadata:
   labels:
     app: dns-reverse
 spec:
-  replicas: 3
+  replicas: {{ .Values.reverseDnsReplicas }}
   selector:
     matchLabels:
       app: dns-reverse

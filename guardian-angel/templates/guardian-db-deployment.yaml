@@ -5,7 +5,7 @@ metadata:
   labels:
     app: guardian-db
 spec:
-  replicas: 1
+  replicas: {{ .Values.guardianDbReplicas }}
   selector:
     matchLabels:
       app: guardian-db

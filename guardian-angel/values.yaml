@@ -16,8 +16,9 @@ internalHttpsPort: 3443
 safeSearchEnforced: false
 guardianConfigDir: '/opt/guardian'
 aclDatabaseFile: '/opt/guardian/acl/acls.db'
+guardianReplicas: 1
 
-# Squid
+# Filter
 proxyHostName: 'webfilter'
 squidInternalPort: 3128
 squidPublicPort: 30128
@@ -28,15 +29,15 @@ transparent: false
 decryptHTTPS: false
 allowRules: '[{"category": "all","allow": true}]'
 decryptRules: '[{"category": "all","decrypt": false}]'
-
-# e2guardian
 e2guardianConfigDir: '/opt/etc/e2guardian'
 phraseDir: '/opt/phrases'
 e2guardianConfig: '{"phraseLists": [],"siteLists": [],"regexpurllists": [],"mimetypelists": [],"extensionslists": []}'
+filterReplicas: 1
 
 # DNS
 publicDnsPort: 9053
 reverseDnsPort: 53
+reverseDnsReplicas: 3
 
 # Postgres
 authDbHost: 'auth-db'
@@ -45,6 +46,7 @@ postgresUser: 'acluser'
 postgresDbName: 'acls'
 dbInternalPort: 27017
 dbServicePort: 5432
+guardianDbReplicas: 1
 
 # CA cert info
 caCountry: 'US'
@@ -59,14 +61,14 @@ caValidDays: 3650
 # Redis config
 redisHost: 'redis'
 redisPort: 6379
+redisReplicas: 1
 
 # Cache config
 cacheTTL: 90
 maxKeys: 8192
 
 # Kubernetes-related
-namespace: 'default'
+
 aclVolumeSize: 4Gi
 dbVolumeSize: 4Gi
 phraseVolumeSize: 4Gi
-
