@@ -31,7 +31,6 @@ data:
         "maxKeys": {{ .Values.maxKeys }}
       },
       "gatewayIP": "{{ .Values.gatewayIP }}",
-      "namespace": "{{ .Values.namespace }}",
       "proxyHost": "{{ .Values.proxyHostName }}",
       "networkConfig": {
         "localTransparent": {{ .Values.localTransparent }}
