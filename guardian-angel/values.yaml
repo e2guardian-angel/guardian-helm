@@ -46,6 +46,7 @@ postgresUser: 'acluser'
 postgresDbName: 'acls'
 dbInternalPort: 27017
 dbServicePort: 5432
+dbPassword: "DB_PASSWORD"
 guardianDbReplicas: 1
 
 # CA cert info
@@ -61,6 +62,7 @@ caValidDays: 3650
 # Redis config
 redisHost: 'redis'
 redisPort: 6379
+redisPassword: "REDIS_PASSWORD"
 redisReplicas: 1
 
 # Cache config
