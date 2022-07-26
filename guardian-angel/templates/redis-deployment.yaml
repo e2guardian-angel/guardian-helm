@@ -11,6 +11,8 @@ spec:
       app: redis
   template:
     metadata:
+      annotations:
+        redispass/hash: {{ .Values.redisPassword | sha1sum | quote }}
       labels:
         app: redis
     spec:

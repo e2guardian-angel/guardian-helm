@@ -11,6 +11,10 @@ spec:
       app: webfilter
   template:
     metadata:
+      annotations:
+        allowrules/hash: {{ .Values.allowRules | sha1sum | quote }}
+        decryptrules/hash: {{ .Values.decryptRules | sha1sum | quote }}
+        e2gconf/hash: {{ .Values.e2guardianConfig | sha1sum | quote }}
       labels:
         app: webfilter
     spec:

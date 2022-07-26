@@ -11,6 +11,8 @@ spec:
       app: guardian-db
   template:
     metadata:
+      annotations:
+        dbpass/hash: {{ .Values.dbPassword | sha1sum | quote }}
       labels:
         app: guardian-db
     spec:

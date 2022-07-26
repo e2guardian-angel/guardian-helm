@@ -11,6 +11,10 @@ spec:
       app: guardian-angel
   template:
     metadata:
+      annotations:
+        redispass/hash: {{ .Values.redisPassword | sha1sum | quote }}
+        dbpass/hash: {{ .Values.dbPassword | sha1sum | quote }}
+        safesearch: {{ .Values.safeSearchEnforced | toString }}
       labels:
         app: guardian-angel
     spec:
