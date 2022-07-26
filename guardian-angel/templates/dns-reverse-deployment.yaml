@@ -10,10 +10,10 @@ spec:
     matchLabels:
       app: dns-reverse
   template:
-    annotations:
-      redispass/hash: {{ .Values.redisPassword | sha1sum | quote }}
-      safesearch: {{ .Values.safeSearchEnforced | toString }}
     metadata:
+      annotations:
+        redispass/hash: {{ .Values.redisPassword | sha1sum | quote }}
+        safesearch: {{ .Values.safeSearchEnforced | toString }}
       labels:
         app: dns-reverse
     spec:
