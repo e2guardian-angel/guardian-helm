@@ -14,7 +14,11 @@ spec:
       annotations:
         redispass/hash: {{ .Values.redisPassword | sha1sum | quote }}
         dbpass/hash: {{ .Values.dbPassword | sha1sum | quote }}
-        safesearch: {{ .Values.safeSearchEnforced | toString }}
+{{- if eq .Values.safeSearchEnforced true }}
+        safesearch/enforced: 'yes'
+{{- else }}
+        safesearch/enforced: 'no'
+{{- end }}
       labels:
         app: guardian-angel
     spec:

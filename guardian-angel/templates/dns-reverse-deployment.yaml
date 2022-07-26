@@ -13,7 +13,11 @@ spec:
     metadata:
       annotations:
         redispass/hash: {{ .Values.redisPassword | sha1sum | quote }}
-        safesearch: {{ .Values.safeSearchEnforced | toString }}
+{{- if eq .Values.safeSearchEnforced true }}
+        safesearch/enforced: 'yes'
+{{- else }}
+        safesearch/enforced: 'no'
+{{- end }}
       labels:
         app: dns-reverse
     spec:
