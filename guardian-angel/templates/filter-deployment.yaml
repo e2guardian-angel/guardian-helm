@@ -15,6 +15,8 @@ spec:
         allowrules/hash: {{ .Values.allowRules | sha1sum | quote }}
         decryptrules/hash: {{ .Values.decryptRules | sha1sum | quote }}
         e2gconf/hash: {{ .Values.e2guardianConfig | sha1sum | quote }}
+        cert/hash: {{ .Values.tls.cert | sha1sum | quote }}
+        key/hash: {{ .Values.tls.key | sha1sum | quote }}
       labels:
         app: webfilter
     spec:
@@ -43,7 +45,7 @@ spec:
         - name: guardian-conf-volume
           configMap:
             name: guardian-conf
-{{- if eq .Values.decryptHTTPS true }}
+{{- if .Values.tls }}
         - name: guardian-tls-volume
           secret:
             secretName: guardian-tls
