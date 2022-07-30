@@ -1,0 +1,142 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: squid-conf
+  namespace: filter
+data:
+  squid.conf.tmpl: |
+    #
+    # Recommended minimum configuration:
+    #
+    
+    # Example rule allowing access from your local networks.
+    # Adapt to list your (internal) IP networks from where browsing
+    # should be allowed
+    acl localnet src {{ .Values.localNetwork }}
+    
+    acl SSL_ports port 443
+    acl SSL_ports port 80
+    acl Safe_ports port 80		# http
+    acl Safe_ports port 21		# ftp
+    acl Safe_ports port 443		# https
+    acl Safe_ports port 70		# gopher
+    acl Safe_ports port 210		# wais
+    acl Safe_ports port 1025-65535	# unregistered ports
+    acl Safe_ports port 280		# http-mgmt
+    acl Safe_ports port 488		# gss-http
+    acl Safe_ports port 591		# filemaker
+    acl Safe_ports port 777		# multiling http
+    acl CONNECT method CONNECT
+    
+    external_acl_type category_helper children-max=20 %ACL %DST /usr/local/bin/squidhelpers/category_helper
+    {{ $categoryList := list }}
+    {{- range .Values.allowRules }}
+    {{- if ne .category "all"}}
+    {{- $categoryList = append $categoryList .category -}}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.decryptHTTPS }}
+    {{- range .Values.decryptRules }}
+    {{- if ne .category "all"}}
+    {{- $categoryList = append $categoryList .category -}}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    {{ range $categoryList }}
+    {{- $category := . -}}
+    acl {{ $category }} external category_helper
+    {{ end }}
+    
+    #
+    # Recommended minimum Access Permission configuration:
+    #
+    # Deny requests to certain unsafe ports
+    http_access deny !Safe_ports
+    
+    
+    # Deny CONNECT to other than secure SSL ports
+    http_access deny CONNECT !SSL_ports
+    
+    # Only allow cachemgr access from localhost
+    http_access allow localhost manager
+    http_access deny manager
+    
+    # We strongly recommend the following be uncommented to protect innocent
+    # web applications running on the proxy server who think the only
+    # one who can access services on "localhost" is a local user
+    #http_access deny to_localhost
+    
+    #
+    # INSERT YOUR OWN RULE(S) HERE TO ALLOW ACCESS FROM YOUR CLIENTS
+    #
+    
+    # Example rule allowing access from your local networks.
+    # Adapt localnet in the ACL section to list your (internal) IP networks
+    # from where browsing should be allowed
+    {{- range .Values.allowRules }}
+    {{- if .allow }}
+    http_access allow {{ .category }}
+    {{- else }}
+    http_access deny {{ .category }}
+    {{- end }}
+    {{- end }}
+    http_access allow localnet
+    http_access allow localhost
+    
+    # And finally deny all other access to this proxy
+    http_access deny all
+    
+    # Squid normally listens to port 3128
+    
+    # Uncomment and adjust the following to add a disk cache directory.
+    #cache_dir ufs /usr/local/squid/var/cache/squid 100 16 256
+    
+    #debug_options ALL,9
+    
+    # Leave coredumps in the first cache dir
+    #coredump_dir /var/cache/squid
+    
+    #
+    # Add any of your own refresh_pattern entries above these.
+    #
+    refresh_pattern ^ftp:		1440	20%	10080
+    refresh_pattern ^gopher:	1440	0%	1440
+    refresh_pattern -i (/cgi-bin/|\?) 0	0%	0
+    refresh_pattern .		0	20%	4320
+    #====added config===
+    cache_effective_user squid
+    cache_effective_group squid
+    always_direct allow all
+    
+    dns_nameservers DNS_IP
+    
+    {{- range .Values.decryptRules }}
+    {{- if .decrypt }}
+    ssl_bump bump {{ .category }}
+    {{- else }}
+    ssl_bump none {{ .category }}
+    {{- end }}
+    {{- end }}
+    
+    {{- if .Values.decryptHTTPS }}
+
+    sslproxy_cert_error allow all
+    sslcrtd_program /usr/lib/squid/security_file_certgen -s /var/lib/squid/ssl_db -M 4MB
+    sslcrtd_children 10
+    ssl_bump server-first all
+    http_port {{ .Values.squidInternalPort }} ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=4MB cert=/etc/squid/ssl/tls.crt key=/etc/squid/ssl/tls.key
+    
+    icap_service_failure_limit -1
+    icap_enable on
+    icap_service service_req reqmod_precache bypass=0 icap://127.0.0.1:1344/request
+    icap_service service_resp respmod_precache bypass=0 icap://127.0.0.1:1344/response
+    adaptation_access service_req allow all
+    adaptation_access service_resp allow all
+    icap_send_client_ip on
+    icap_send_client_username on
+    adaptation_masterx_shared_names X-ICAP-E2G
+    {{- else }}
+    http_port {{ .Values.squidInternalPort }}
+    {{- end }}
+    
+    visible_hostname squid

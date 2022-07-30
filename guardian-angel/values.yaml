@@ -27,8 +27,16 @@ squidConfigDir: '/etc/squid'
 httpsEnabled: false
 transparent: false
 decryptHTTPS: false
-allowRules: '[{"category": "all","allow": true}]'
-decryptRules: '[{"category": "all","decrypt": false}]'
+allowRules:
+- category: porn
+  allow: false
+- category: all
+  allow: true
+decryptRules:
+- category: streaming
+  decrypt: true
+- category: all
+  decrypt: false
 e2guardianConfigDir: '/opt/etc/e2guardian'
 phraseDir: '/opt/phrases'
 e2guardianConfig: '{"phraseLists": [],"siteLists": [],"regexpurllists": [],"mimetypelists": [],"extensionslists": []}'

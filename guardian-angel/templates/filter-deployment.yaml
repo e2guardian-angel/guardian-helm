@@ -12,8 +12,8 @@ spec:
   template:
     metadata:
       annotations:
-        allowrules/hash: {{ .Values.allowRules | sha1sum | quote }}
-        decryptrules/hash: {{ .Values.decryptRules | sha1sum | quote }}
+        allowrules/hash: {{ .Values.allowRules | toString | sha1sum | quote }}
+        decryptrules/hash: {{ .Values.decryptRules | toString | sha1sum | quote }}
         e2gconf/hash: {{ .Values.e2guardianConfig | sha1sum | quote }}
 {{- if .Values.tls }}
         cert/hash: {{ .Values.tls.cert | sha1sum | quote }}
@@ -31,7 +31,7 @@ spec:
             - mountPath: {{ .Values.guardianConfigDir }}
               name: guardian-conf-volume
 {{- if eq .Values.decryptHTTPS true }}
-	    - mountPath: {{ .Values.squidConfigDir }}/ssl
+            - mountPath: {{ .Values.squidConfigDir }}/ssl
               name: guardian-tls-volume
         - name: e2guardian
           image: 'jusschwa/e2guardian-icap:latest'
@@ -47,10 +47,15 @@ spec:
         - name: guardian-conf-volume
           configMap:
             name: guardian-conf
+        - name: squid-conf-volume
+          configMap:
+            name: squid-conf
+{{- if eq .Values.decryptHTTPS true }}
 {{- if .Values.tls }}
         - name: guardian-tls-volume
           secret:
             secretName: guardian-tls
+{{- end }}
 {{- end }}
         - name: guardian-phrases
           persistentVolumeClaim:

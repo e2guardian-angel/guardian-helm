@@ -39,11 +39,11 @@ data:
       "httpsPort": {{ .Values.internalHttpsPort }},
       "safeSearchEnforced": {{ .Values.safeSearchEnforced }},
       "aclDatabaseFile": "{{ .Values.aclDatabaseFile }}",
-      "allowRules": {{ .Values.allowRules }},
+      "allowRules": {{ .Values.allowRules | toJson }},
       "authDb": {
         "host": "{{ .Values.authDbHost }}"
       },
-      "decryptRules": {{ .Values.decryptRules }},
+      "decryptRules": {{ .Values.decryptRules | toJson }},
       "helper": {
         "host": "{{ .Values.lookupHostName }}",
         "port": {{ .Values.internalHttpPort }}
