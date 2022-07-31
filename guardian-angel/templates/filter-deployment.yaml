@@ -24,12 +24,15 @@ spec:
     spec:
       containers:
         - name: squid
-          image: 'jusschwa/squid-ssl:latest'
+          image: 'jusschwa/squid-ssl:helmconfig'
+          env:
+            - name: LOOKUP_HOST
+              value: '{{ .Values.lookupHostName }}'
+            - name: LOOKUP_PORT
+              value: '{{ .Values.internalHttpPort | toString }}'
           ports:
             - containerPort: {{ .Values.squidInternalPort }}
           volumeMounts:
-            - mountPath: {{ .Values.guardianConfigDir }}
-              name: guardian-conf-volume
             - mountPath: /tmpl
               name: squid-conf-volume
 {{- if eq .Values.decryptHTTPS true }}
