@@ -30,6 +30,8 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.guardianConfigDir }}
               name: guardian-conf-volume
+            - mountPath: /tmpl
+              name: squid-conf-volume
 {{- if eq .Values.decryptHTTPS true }}
             - mountPath: {{ .Values.squidConfigDir }}/ssl
               name: guardian-tls-volume
