@@ -43,9 +43,9 @@ spec:
           ports:
             - containerPort: {{ .Values.icapInternalPort }}
           volumeMounts:
-            - mountPath: {{ .Values.e2guardianConfigDir }}/guardian.angel
+            - mountPath: {{ .Values.e2guardianConfigDir }}/lists/guardian.angel
               name: e2guardian-lists-volume
-            - mountPath: {{ .Values.e2guardianConfigDir }}/guardian.phrases
+            - mountPath: {{ .Values.e2guardianConfigDir }}/lists/guardian.phrases
               name: e2guardian-phrases-volume
 {{- end }}
       volumes:
