@@ -43,25 +43,25 @@ spec:
           ports:
             - containerPort: {{ .Values.icapInternalPort }}
           volumeMounts:
-            - mountPath: {{ .Values.guardianConfigDir }}
-              name: guardian-conf-volume
-            - mountPath: {{ .Values.phraseDir }}
-              name: guardian-phrases
+            - mountPath: {{ .Values.e2guardianConfigDir }}/guardian.angel
+              name: e2guardian-lists-volume
+            - mountPath: {{ .Values.e2guardianConfigDir }}/guardian.phrases
+              name: e2guardian-phrases-volume
 {{- end }}
       volumes:
-        - name: guardian-conf-volume
-          configMap:
-            name: guardian-conf
         - name: squid-conf-volume
           configMap:
             name: squid-conf
 {{- if eq .Values.decryptHTTPS true }}
+        - name: e2guardian-lists-volume
+          configMap:
+            name: e2guardian-lists
+        - name: e2guardian-phrases-volume
+          configMap:
+            name: e2guardian-phrases
 {{- if .Values.tls }}
         - name: guardian-tls-volume
           secret:
             secretName: guardian-tls
 {{- end }}
 {{- end }}
-        - name: guardian-phrases
-          persistentVolumeClaim:
-            claimName: phrases-pvc

@@ -29,3 +29,6 @@ data:
 {{- end }}
 {{- end }}
 {{- end }}
+kind: ConfigMap
+metadata:
+  name: e2guardian-phrases
