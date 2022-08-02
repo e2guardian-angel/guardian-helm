@@ -41,10 +41,3 @@ spec:
           envFrom:
             - secretRef:
                 name: redis-pass
-          volumeMounts:
-            - mountPath: {{ .Values.guardianConfigDir }}
-              name: guardian-conf-volume
-      volumes:
-        - name: guardian-conf-volume
-          configMap:
-            name: guardian-conf
