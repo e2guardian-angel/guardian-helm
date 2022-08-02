@@ -60,3 +60,51 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Add list includes
+*/}}
+{{- define "includeLists" -}}
+{{- $self := . -}}
+{{- range .Values.e2guardianConf.lists }}
+{{- $list := . -}}
+{{- if has $self.listName $list.includeIn }}
+{{- range .groups }}
+{{- $group := . -}}
+{{- if $group.name }}
+    {{print "\n    "}}#listcategory: {{ $group.name }}
+{{- end }}
+{{- range $group.items }}
+{{- $item := . -}}
+    {{print "\n    "}}{{- $item }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Add phrase list includes
+*/}}
+{{- define "includePhraseLists" -}}
+{{- $self := . -}}
+{{- range .Values.e2guardianConf.phraseLists }}
+{{- $phraseList := . -}}
+{{- if has $self.listName $phraseList.includeIn }}
+    .Include<{{ $self.Values.e2guardianConfigDir }}/lists/guardian.phrases/{{ $phraseList.name }}>
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Add weighted phrase list includes
+*/}}
+{{- define "includeWeightedPhraseLists" -}}
+{{- $self := . -}}
+{{- range .Values.e2guardianConf.weightedPhraseLists }}
+{{- $phraseList := . -}}
+{{- if has $self.listName $phraseList.includeIn }}
+    .Include<{{ $self.Values.e2guardianConfigDir }}/lists/guardian.phrases/{{ $phraseList.name }}>
+{{- end }}
+{{- end }}
+{{- end }}

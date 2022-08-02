@@ -1,0 +1,1870 @@
+apiVersion: v1
+data:
+  bannedmimetypelist: |
+    # banned MIME types
+    
+{{- if .Values.e2guardianConf.defaultConfig }}
+    audio/mpeg
+    audio/x-mpeg
+    audio/x-pn-realaudio
+    audio/x-wav
+    video/mpeg
+    video/x-mpeg2
+    video/acorn-replay
+    video/quicktime
+    video/x-msvideo
+    video/msvideo
+    application/gzip
+    application/x-gzip
+    application/zip
+    application/compress
+    application/x-compress
+    application/java-vm
+{{- end }}
+{{include "includeLists" (dict "Values" .Values "listName" "bannedmimetypelist")}}
+
+  bannedphraselist: |+
+    # BANNEDPHRASELIST - INSTRUCTIONS FOR USE
+    #
+    # To block any page with the word "sex".
+    # < sex >
+    #
+    # To block any page with words that contain the string "sex". (ie. sexual)
+    # <sex>
+    #
+    # To block any page with the string "sex magazine".
+    # <sex magazine>
+    #
+    # To block any page containing the words/strings "sex" and "fetish".
+    # <sex>,<fetish>
+    #
+    # < test> will match any word with the string 'test' at the beginning
+    # <test > will match any word with the string 'test' at the end
+    # <test> will match any word with the string 'test' at any point in the word
+    # < test > will match only the word 'test'
+    # <this is a test phrase> will match that exact phrase
+    # <test>,<secondtest> will match if both words are found in the page
+    # A combination of the above can also be used eg < test>,<secondtest>
+    #
+    # All phrases need to be within < and > to work, othewise they will be
+    # ignored.
+
+    # Note: Use these sparingly - banned phrases tend to overblock
+
+
+    #listcategory: "Banned Phrases"
+
+
+    # The following banned phraselists are included in the default e2g distribution.
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/pornography/banned>
+{{- end }}
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/gambling/banned>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/badwords/banned>
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/gambling/banned>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/intolerance/banned>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/personals/banned>
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/gambling/banned>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/gambling/banned>
+{{include "includePhraseLists" (dict "Values" .Values "listName" "bannedphraselist")}}
+  bannedregexpheaderlist: |+
+    #Banned outgoing HTTP headers based on regular expressions
+    #
+    # E.g. 'User-Agent: .*MSIE' would block several versions of Internet Explorer
+    # (assuming the user-agent is not being spoofed by the client)
+    #
+    # Headers are matched line-by-line, not as a single block.
+
+    #listcategory: "Banned Regular Expression HTTP Headers"
+{{include "includeLists" (dict "Values" .Values "listName" "bannedregexpheaderlist")}}
+
+  bannedregexpurllist: |+
+    #Banned URLs based on Regular Expressions
+    #
+    # E.g. 'sex' would block sex.com and middlesex.com etc
+
+    #listcategory: "Banned Regular Expression URLs"
+
+    #Banned URLs based on Regular Expressions
+
+    #These examples should be used with extreme caution 
+    # as most regexp url patterns tend to overblock
+    # Be as specific as possible as this helps avoid this
+
+    ######################################################
+    # Pornography, Modelling and Adult Sites
+    ######################################################
+
+    #\b(big|cyber|hard|huge|mega|small|soft|super|tiny|bare|naked|nude|anal|oral|topp?les|sex|phone)+\b.*\b(anal|babe|bharath|boob|breast|busen|busty|clit|cum|cunt|dick|fetish|fuck|girl|hooter|lez|lust|naked|nude|oral|orgy|penis|porn|porno|pupper|pussy|rotten|sex|shit|smutpump|teen|tit|topp?les|xxx)s\b?
+    #\b(anal|babe|bharath|boob|breast|busen|busty|clit|cum|cunt|dick|fetish|fuck|girl|hooter|lez|lust|naked|nude|oral|orgy|penis|porn|porno|pupper|pussy|rotten|sex|shit|smutpump|teen|tit|topp?les|xxx)+\b.*\b(big|cyber|hard|huge|mega|small|soft|super|tiny|bare|naked|nude|anal|oral|topp?les|sex)\b+
+
+    #HardCore phrases
+    #(adultsight|adultsite|adultsonly|adultweb|blowjob|bondage|centerfold|cumshot|cyberlust|cybercore|hardcore|masturbat)
+    #(bangbros|pussylip|playmate|pornstar|sexdream|showgirl|softcore|striptease)
+
+    #SoftCore phrases - more likely to overblock - possibly on news sites
+    #(incest|obscene|pedophil|pedofil)
+
+    #Photo Modeling - supplied by David Burkholder
+    #(male|m[ae]n|boy|girl|beaut|agen[ct]|glam)+.*(model|talent)
+
+    # The following will help to block explicit media files (images and video)
+    #(sex|fuck|boob|cunt|fetish|tits|anal|hooter|asses|shemale|submission|porn|xxx|busty|knockers|slut|nude|naked|pussy)+.*(\.jpg|\.wmv|\.mpg|\.mpeg|\.gif|\.mov)
+    #(girls|babes|bikini|model)+.*(\.jpg|\.wmv|\.mpg|\.mpeg|\.gif|\.mov)
+
+    #Block Naturism and Nudist sites
+    #(naturism|naturist|nude|nudist|nudism|nekkid|nakt|naakt)
+
+
+    ######################################################
+    # Search Engine and Related
+    ######################################################
+
+    #Block unfiltered options on various search engines
+    #(^|[\?+=&/])(.*\.google\..*/.*\?.*safe=off)([\?+=&/]|$)
+    #(^|[\?+=&/])(.*\.alltheweb.com/customize\?.*copt_offensive=off)([\?+=&/]|$)
+
+    #Block images and video on altavista, alltheweb, yahoo etc - as they are anonomised
+    #(yahoo.com\/image\/)
+    #(yimg.com\/image\/)
+    #(altavista.com\/image\/)
+    #(altavista.com\/video\/)
+    #(picsearch.com\/is)
+
+    #Block images and video on google
+    #(images.google)+.*(\.jpg|\.wmv|\.mpg|\.mpeg|\.gif|\.mov) 
+    #(google.com\/video) #block all video
+    #(google.com\/ThumbnailServer) #block video thumbnails
+    #(google.com\/videoplay) #block only playing the video
+
+
+    ######################################################
+    # Proxy Sites
+    ######################################################
+
+    #Block Cgiproxy, Poxy, PHProxy and other Web-based proxies
+    #(cecid.php|nph-webpr|nph-pro|/dmirror|cgiproxy|phpwebproxy|__proxy_url|proxy.php)
+
+    #Block websites containing proxy lists
+    #(anonymizer|proxify|megaproxy)
+
+    #AGRESSIVE blocking of all URLs containing proxy - WARNING - this WILL overblock!!
+    #(proxy)
+
+
+    ######################################################
+    # Gambling - supplied by David Burkholder
+    ######################################################
+    #(casino|bet(ting|s)|lott(ery|o)|gam(e[rs]|ing|bl(e|ing))|sweepstake|poker)
+
+
+    ######################################################
+    # Sport - supplied by David Burkholder
+    ######################################################
+    #(bowling|badminton|box(e[dr]|ing)|skat(e[rs]|ing)|hockey|soccer|nascar|wrest|rugby|tennis|sports|cheerlead|rodeo|cricket|badminton|stadium|derby)
+    #((paint|volley|bas(e|ket)|foot|quet)ball|/players[/\.]?|(carn|fest)ival)
+
+    #Racing - supplied by David Burkholder
+    #(speed(st|wa|y)|corvette|rac[eiy]|wrest|harley|motorcycle|nascar)
+
+
+    ######################################################
+    # News sites - supplied by David Burkholder
+    ######################################################
+    #(news(watch|pap|cast)|herald|sentinel|courier|gazet|tribune|chronicle|daily|ning)news)
+
+
+    ######################################################
+    # Dating Sites - supplied by David Burkholder
+    ######################################################
+    #(meet|hook|mailord|latin|(asi|mexic|dominic|russi|kore|colombi|balk)an|brazil|filip|french|chinese|ukrain|thai|tour|foreign|date)+.*(dar?[lt]ing|(sing|coup)le|m[ae]n|girl|boy|guy|mat(e|ing)|l[ou]ve?|partner|meet)
+    #(marr(y|i[ae])|roman(ce|tic)|fiance|bachelo|dating|affair|personals)
+
+
+    ######################################################
+    # Miscellaneous - Productivity etc.
+    ######################################################
+
+    #Use this to block web counters:
+    #(adlog.php|cnt.cgi|count.cgi|count.dat|count.jsp|count.pl|count.php|counter.cgi|counter.js|counter.pl|countlink.cgi|fpcount.exe|logitpro.cgi|rcounter.dll|track.pl|w_counter.js)
+    #Contributed by proxy@barendse.to
+
+    #Free stuff - supplied by David Burkholder
+    #(free|phone|mobile)+.*(love|music|movie|dvd|video|stuff|site|arcade|wallpaper|mp3)
+    #((ring|real)tone)
+
+    #Music - supplied by David Burkholder
+    #(rock|pop|jazz|rap|punk)+.*(cult|roll|geek|drum|music|history|band)
+
+    # WARNING: This is part of the URL for the e2guardian.org sample virus archive.
+    # You probably don't want to go there unintentionally.
+    (Variants/AVTest)
+{{include "includeLists" (dict "Values" .Values "listName" "bannedregexpurllist")}}
+
+  bannedregexpuseragentlist: |+
+    #Banned User-Agents based on regular expressions
+    #
+    # E.g. ' .*MSIE' would block several versions of Internet Explorer
+    # (assuming the user-agent is not being spoofed by the client)
+    #
+    #listcategory: "user-agent"
+    #
+    # This is useful for blocking apps
+    # e.g. to block Kindle app
+    #kindle
+    #Kindle
+{{include "includeLists" (dict "Values" .Values "listName" "bannedregexpuseragentlist")}}
+
+  bannedsearchlist: |+
+    #Banned Search Words
+    #
+    #Words must be in alphabetic order within a single line
+    # and separated by a '+' sign.
+    #All combinations of the words will be blocked
+    # e.g.   girl+naughty
+    #     will block  naughty+girl as well as girl+naughty
+{{include "includeLists" (dict "Values" .Values "listName" "bannedsearchlist")}}
+
+  bannedsearchoveridelist: ""
+  bannedsiteiplist: |+
+    # IP sites in banned list
+
+    #The bannedsiteiplist is for blocking ALL of an IP site
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "bannedsiteiplist")}}
+
+  bannedsitelist: |+
+    #domains in banned list
+    #Don't bother with the www. or the http://
+
+    #The bannedurllist is for blocking PART of a site
+    #The bannedsitelist is for blocking ALL of a site
+
+    #NOTE: Sites using just IP should be put into bannedsiteiplist
+
+    #You can include
+    #.tld so for example you can match .gov for example
+
+    #The 'grey' lists override the 'banned' lists.
+    #The 'exception' lists override the 'banned' lists also.
+    #The difference is that the 'exception' lists completely switch
+    #off *all* other filtering for the match.  'grey' lists only
+    #stop the URL filtering and allow the normal filtering to work.
+
+    #An example of grey list use is when in Blanket Block (whitelist)
+    #mode and you want to allow some sites but still filter as normal
+    #on their content
+
+    #Another example of grey list use is when you ban a site but want
+    #to allow part of it.
+
+    #To include additional files in this list use this example:
+    #.Include<{{ .Values.e2guardianConfigDir }}/anotherbannedurllist>
+
+    #You can have multiple .Includes.
+
+    # Time limiting syntax:
+    # #time: <start hour> <start minute> <end hour> <end minute> <days>
+    # Example:
+    ##time: 9 0 17 0 01234
+    # Remove the first # from the line above to enable this list only from
+    # 9am to 5pm, Monday to Friday.
+
+    # List categorisation
+    #listcategory: "Banned Sites"
+
+    #List other sites to block:
+
+    # badboys.com
+
+    # NOTE: From v5 Blanket blocks are now implemented using Storyboarding 
+    # WARNING: Old style Blanket blocks in this file will be silently ignored
+
+
+    # The squidGuard advert domain/URL lists are now included by default.
+    # To work with advanced ad blocking & the logadblocks option, advert
+    # phrase/site/URL lists should have the string "ADs" in their listcategory.
+    # .Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/ads/domains>
+
+    #Remove the # from the following and edit as needed to use a stock
+    #squidGuard/urlblacklists collection.
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/adult/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/aggressive/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/artnudes/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/audio-video/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/beerliquorinfo/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/beerliquorsale/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/chat/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/childcare/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/clothing/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/culinary/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/dialers/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/drugs/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/entertainment/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/forums/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/frencheducation/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/gambling/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/government/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/hacking/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/homerepair/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/hygiene/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/jewelry/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/jobsearch/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/kidstimewasting/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/mail/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/news/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/onlineauctions/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/onlinegames/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/onlinepayment/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/personalfinance/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/pets/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/porn/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/proxy/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/publicite/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/redirector/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/ringtones/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/sportnews/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/sports/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/vacation/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/violence/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/virusinfected/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/warez/domains>
+
+    # You will need to edit to add and remove categories you want
+{{include "includeLists" (dict "Values" .Values "listName" "bannedsitelist")}}
+
+  bannedsslsiteiplist: |+
+    #IP sites in banned ssl list
+    #This list is only used for SSL (or CONNECT) requests
+    #Unlike the bannedsitelist it overides all other lists
+    # so can be used ban an https site white the http is allowed or made an exception
+    # 
+    #Only list sites where you only want the https site blocked
+    #Use bannedsiteiplist for sites where you want both http & https blocked
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "bannedsslsiteiplist")}}
+
+  bannedsslsitelist: |+
+    #domains in banned ssl list
+    #Don't bother with the www. or the https://
+    #This list is only used for SSL (or CONNECT) requests
+    # and will not have any effect when MITM is enabled.
+    #Unlike the bannedsitelist it overides all other lists
+    # so can be used ban an https site white the http is allowed or made an exception
+    # 
+    #Only list sites where you only want the https site blocked
+    #Use bannedsitelist for sites where you want both http & https blocked
+{{include "includeLists" (dict "Values" .Values "listName" "bannedsslsitelist")}}
+
+  bannedtimelist: |
+    #timebands when internet blocked
+
+    #You can have multiple .Includes.
+
+    # Tiime banding syntax:
+    # <start hour> <start minute> <end hour> <end minute> <days>
+    # Note figures are 0 based - hours (0-23) mins (0-59) days (0-6)
+    # Example:
+    # 22 0 23 59 01234
+    # 0  0 07 0 01234
+
+    # Uncomment the lines above to block access from
+    # 0am to 5am and 10pm to 11:59pm, Monday to Friday.
+{{include "includeLists" (dict "Values" .Values "listName" "bannedtimelist")}}
+  bannedurllist: |
+    #URLs in banned list
+    #Don't bother with the http:// or the www
+
+    #The bannedurllist is for blocking PART of a site
+    #The bannedsitelist is for blocking ALL of a site
+
+    #The 'grey' lists override the 'banned' lists.
+    #The 'exception' lists override the 'banned' lists also.
+    #The difference is that the 'exception' lists completely switch
+    #off *all* other filtering for the match.  'grey' lists only
+    #stop the URL filtering and allow the normal filtering to work.
+
+    #An example of grey list use is when in Blanket Block (whitelist)
+    #mode and you want to allow some sites but still filter as normal
+    #on their content
+
+    #Another example of grey list use is when you ban a site but want
+    #to allow part of it.
+
+    #To include additional files in this list use this example:
+    #.Include<{{ .Values.e2guardianConfigDir }}/anotherbannedurllist>
+
+    #You can have multiple .Includes.
+
+    #listcategory: "Banned URLs"
+
+    #List other URLs to block:
+
+    # members.home.net/uporn
+
+    # The squidGuard advert domain/URL lists are now included by default.
+    # To work with advanced ad blocking & the logadblocks option, advert
+    # phrase/site/URL lists should have the string "ADs" in their listcategory.
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/ads/urls>
+
+    #Remove the # from the following and edit as needed to use a stock
+    #squidGuard/urlblacklist blacklists collection.
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/adult/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/aggressive/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/audio-video/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/chat/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/drugs/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/entertainment/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/frencheducation/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/gambling/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/government/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/hacking/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/jobsearch/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/kidstimewasting/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/mail/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/news/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/porn/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/proxy/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/publicite/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/redirector/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/violence/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/virusinfected/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/warez/urls>
+    # You will need to edit to add and remove categories you want
+{{include "includeLists" (dict "Values" .Values "listName" "bannedurllist")}}
+  blankettimelist: |
+    #timebands when blanket block is applied
+    # (only exception sites will be allowed)
+    # To enable this list edit e2guardianfn.conf and filter group i
+    # storyboard fn.story - see examplef1.story
+
+    #You can have multiple .Includes.
+
+    # Tiime banding syntax:
+    # <start hour> <start minute> <end hour> <end minute> <days>
+    # Note figures are 0 based - hours (0-23) mins (0-59) days (0-6)
+    # Example:
+    # 22 0 23 59 01234
+    # 0  0 07 0 01234
+
+    # Uncomment the lines above to blanket block from
+    # 0am to 5am and 10pm to 11:59pm, Monday to Friday.
+{{include "includeLists" (dict "Values" .Values "listName" "blankettimelist")}}
+  contentregexplist: |
+    #Content modifying Regular Expressions
+    #
+    # The format is: "extended regular expression"->"replacement straight string"
+    # E.g. "shit"->"censored" would replace all occurances of shit in any case.
+    # Far more complicated matches are possible.  See other sources for examples
+    # of extended regular expressions.
+
+    # These are just some examples.  If you write any, for example, to
+    # remove popups etc, please send them to author at e2guardian.org.
+    #
+    #"<script language.*open\(.*script>"->"<!-- its gone -->"
+    #"fuck|cunt|shit"->"**censored**"
+    #
+    # For ALL of these to work it requires e2guardian to be built with PCRE support,
+    # but some may work with the default C library regular expression support.
+    #
+    # Some of these are based on regular expressions from Privoxy.
+
+    #remove popups by AFN 2004/2/28
+    #"<html>"->"<script language='javascript'>fwo=window.open;function NO(url,nam,atr){return(this.window);}window.open=NO;</script><html>"
+    #"=[ ]*?window\.open[ ]*?\("->"=fwo("
+    #"<html>"->"<script language='javascript'>function NO(url,nam,atr){return(this.window);}window.open=NO;</script><html>"
+
+    # Fix Firefox <= 1.0.7 DoS
+    # http://www.whitedust.net/speaks/1432/
+    #"((<source)|(</source))text>"->"$1dosremovedtext"
+
+    # Disable ActiveX objects.
+    #"<object [^>]*application\/x-oleobject[^>]*>.*?<\/object>"->"<!-- Guardian Removed ActiveX Object -->"
+    #"<embed [^>]*(application/x-oleobject).*?>(.*?</embed>)?"->"<!-- Guardian Removed ActiveX Embed -->"
+
+    # Warn about address bar spoofing.
+    #"(<a[^>]*href[^>]*)(\x01|\x02|\x03|%0[012])"->"$1MALICIOUS-LINK"
+
+    # Disable all popups in JavaScript and HTML.  It may cause unavoidable
+    # Javascript warnings or errors.  Do not enable at the same time as other
+    # popup removing lines.
+    #"((\W\s*)(window|this|parent)\.)open\s*\\?\("->"$1concat("
+    #"\starget\s*=\s*(['"]?)_?(blank|new)\1?"->" notarget"
+
+    # Removes the APPLET tag which is generally used Java applets.
+    #"<applet[^>]*>.*?<\/applet>"->""
+
+    # Disable the BLINK and MARQUEE tags.
+    #"</?(blink|marquee)[^>]*>"->""
+
+    # Warn about potential cross-site-scripting vulnerability described here:
+    # http://online.securityfocus.com/archive/1/298748/2002-11-02/2002-11-08/2
+    #"f\("javascript:location.replace\('mk:@MSITStore:C:'\)"\);"->"alert\("This page looks like it tries to use a vulnerability described here:\n http://online.securityfocus.com/archive/1/298748/2002-11-02/2002-11-08/2"\);"
+
+    # Removes the SCRIPT tag with JavaScript.  This will likely break sites that are
+    # badly written and thus rely on JavaScript.  This should not be used at the same
+    # time as the 'script' category.
+    #"<script [^>]*javascript[^>]*>.*?<\/script>"->""
+
+    # Removes href=javascript: onmouseover=javascript: and other javascript actions.
+    # This is a good category to tick if using 'script' or 'javascript' categories.
+    # Beware that there are likely going to be a large number of matches and will
+    # require more CPU.  Also this will break badly written sites that require
+    # JavaScript for navigation.
+    #"(onclick|ondblclick|onmousedown|onmouseup|onmouseover|onmousemove|onmouseout|onkeypress|onkeydown|onkeyup|href)(=("|')?)javascript:"->"guardianremoved$2none:"
+
+    # Remove cookies set by JavaScript and HTML.
+    #"(\w+\.)+cookie(?=[ \t\r\n]*=)(?!='aab)"->"GuardianRemovedCookie"
+    #"<meta\s+http-equiv=['"]?set-cookie.*>"->"<!-- GuardianRemovedCookie -->"
+
+    # Attempt to detect and stop Nimda infected servers's web pages. This is rare
+    # and generally should be left unused.
+    #"<script language="JavaScript">(window\.open|1;''\.concat)\("readme\.eml", null, "resizable=no,top=6000,left=6000"\)</script>"->"<br><font size="7"> WARNING: This Server is infected with <a href="http://www.cert.org/advisories/CA-2001-26.html">Nimda</a>!</font>"
+
+    # Disable onunload (page close) popups.
+    #"(<body\s+[^>]*)onunload"->"$1never"
+    #"(<script.*)window\.onunload(?=.*</script>)"->"$1never"
+
+    # Removes the SCRIPT tag which could include JavaScript, perlscript and vbscript.
+    # This will likely break sites that are badly written and thus rely on client
+    # side scripts.  This should not be used at the same time as the 'javascript' line.
+    #"<script[^>]*>.*?<\/script>"->""
+
+    # Disable Sockwave Flash objects.
+    #"<object [^>]*macromedia[^>]*>.*?<\/object>"->"<!-- Guardian Removed Shockwave Object -->"
+    #"<embed [^>]*(application/x-shockwave-flash\|\.swf).*?>(.*?</embed>)?"->"<!-- Guardian Removed Shockwave Flash Embed -->"
+
+    # Disable unsolicited popups.
+    #"([^'"]\s*<head.*>)(?=\s*[^'"])"->"$1<script>function SWGuardianWindowOpen(){return(null);}</script>"
+    #"([^\w\s.]\s*)((window|this|parent)\.)?open\s*\("->"$1SWGuardianWindowOpen("
+    #"([^'"]\s*</html>)(?!\s*(\\n|'|"))"->"$1<script>function PrivoxyWindowOpen(a, b, c){return(window.open(a, b, c));}</script>"
+
+    # Remove 1x1 GIFs used for user tracking.
+    #"<img\s+[^>]*(?:(width)|(height))\s*=\s*['"]?[01](?=\D)[^>]*(?:(width)|(height))\s*=\s*['"]?[01](?=\D)[^>]*?>"->""
+
+    # Prevent windows from resizing and moving themselves.
+    #"(?:window|this|self|top)\.(?:move|resize)(?:to|by)\("->"''.concat("
+{{include "includeLists" (dict "Values" .Values "listName" "contentregexplist")}}
+  domainsnobypass: |
+    # User are not allowed to bypass domains in this list
+
+    #Don't bother with the www. or the http://
+
+    #NOTE: Sites using just IP should be put into bannedsiteiplistwithbypass
+
+    #You can include
+    #.tld so for example you can match .gov for example
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/anotherbannedurllist>
+
+    #You can have multiple .Includes.
+
+    # WARNING: Old style Blanket blocks in this file will be silently ignored
+
+
+    # .Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/ads/domains>
+
+    #Remove the # from the following and edit as needed to use a stock
+    #squidGuard/urlblacklists collection.
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/adult/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/aggressive/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/artnudes/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/audio-video/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/beerliquorinfo/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/beerliquorsale/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/chat/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/childcare/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/clothing/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/culinary/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/dialers/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/drugs/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/entertainment/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/forums/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/frencheducation/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/gambling/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/government/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/hacking/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/homerepair/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/hygiene/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/jewelry/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/jobsearch/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/kidstimewasting/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/mail/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/news/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/onlineauctions/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/onlinegames/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/onlinepayment/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/personalfinance/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/pets/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/porn/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/proxy/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/publicite/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/redirector/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/ringtones/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/sportnews/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/sports/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/vacation/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/violence/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/virusinfected/domains>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/warez/domains>
+
+    # You will need to edit to add and remove categories you want
+{{include "includeLists" (dict "Values" .Values "listName" "domainsnobypass")}}
+  exceptionextensionlist: |+
+    # Exception file extension list
+    # Use as a filter group's "exceptionextensionlist",
+    # to override a blanket download block.
+    # (blockdownloads = on)
+    #
+    # DOES NOT override content/virus scanning or site/URL bans. 
+    #
+    # Default list:
+    # Unblock web pages & graphics
+
+    # Text/web document types
+
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .css
+    .html
+    .shtml
+    .htm
+    .stm
+    .asp
+    .php
+    .txt
+    .rtx
+    .xml
+    .xsl
+    .cgi
+    .pl
+
+    # Image types
+
+    .bmp
+    .cod
+    .gif
+    .ief
+    .jpe
+    .jpeg
+    .jpg
+    .jfif
+    .tif
+    .tiff
+    .ras
+    .cmx
+    .ico
+    .pnm
+    .pbm
+    .pgm
+    .ppm
+    .rgb
+    .xbm
+    .xpm
+    .xwd
+{{- end }}
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionextensionlist")}}
+
+  exceptionfilesiteiplist: |+
+    # Exception file site ip list
+    # Use this list to define ip sites from which files can be downloaded,
+    # overriding a blanket download block (blockdownloads = on) or the
+    # banned MIME type and extension lists (blockdownloads = off).
+    #
+    # DOES NOT override content/virus scanning or site/URL bans.
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionfilesiteiplist")}}
+
+  exceptionfilesitelist: |
+    # Exception file site list
+    # Use this list to define sites from which files can be downloaded,
+    # overriding a blanket download block (blockdownloads = on) or the
+    # banned MIME type and extension lists (blockdownloads = off).
+    #
+    # DOES NOT override content/virus scanning or site/URL bans.
+
+    # Don't bother with the www. or
+    # the http://
+    #
+    # These are specifically domains and are not URLs.
+    # For example 'foo.bar/porn/' is no good, you need
+    # to just have 'foo.bar'.
+    #
+    # You can also match IPs here too.
+    #
+    # As of DansGuardian 2.7.3 you can now include
+    # .tld so for example you can match .gov for example
+
+
+    # Time limiting syntax:
+    # #time: <start hour> <start minute> <end hour> <end minute> <days>
+    # Example:
+    ##time: 9 0 17 0 01234
+    # Remove the first # from the line above to enable this list only from
+    # 9am to 5pm, Monday to Friday.
+
+    windowsupdate.microsoft.com
+    update.microsoft.com
+    download.windowsupdate.com
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionfilesitelist")}}
+  exceptionfileurllist: |+
+    # Exception file URL list
+    # Use this list to define URLs from which files can be downloaded,
+    # overriding a blanket download block (blockdownloads = on) or the
+    # banned MIME type and extension lists (blockdownloads = off).
+    #
+    # DOES NOT override content/virus scanning or site/URL bans.
+
+    # Don't bother with the www. or
+    # the http://
+    #
+    # These are specifically domains and are not URLs.
+    # For example 'foo.bar/porn/' is no good, you need
+    # to just have 'foo.bar'.
+    #
+    # You can also match IPs here too.
+    #
+    # As of DansGuardian 2.7.3 you can now include
+    # .tld so for example you can match .gov for example
+
+
+    # Time limiting syntax:
+    # #time: <start hour> <start minute> <end hour> <end minute> <days>
+    # Example:
+    ##time: 9 0 17 0 01234
+    # Remove the first # from the line above to enable this list only from
+    # 9am to 5pm, Monday to Friday.
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionfileurllist")}}
+  exceptionmimetypelist: |
+    # Exception MIME type list
+    # Use as a filter group's "exceptionmimetypelist",
+    # to override a blanket download block.
+    # (blockdownloads = on)
+    #
+    # DOES NOT override content/virus scanning or site/URL bans.
+    #
+    # Default list:
+    # Unblock web pages & graphics
+
+    # Text/web document types
+{{- if .Values.e2guardianConf.defaultConfig }}
+    text/plain
+    text/html
+    text/css
+    text/xml
+    text/xsl
+    text/richtext
+
+    # Image types
+
+    image/bmp
+    image/cis-cod
+    image/gif
+    image/ief
+    image/jpeg
+    image/pipeg
+    image/png
+    image/tiff
+    image/x-cmu-raster
+    image/x-cmx
+    image/x-icon
+    image/x-portable-anymap
+    image/x-portable-bitmap
+    image/x-portable-graymap
+    image/x-portable-pixmap
+    image/x-rgb
+    image/x-xbitmap
+    image/x-xpixmap
+    image/x-xwindowdump
+{{- end }}
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionmimetypelist")}}
+  exceptionphraselist: |
+    # EXCEPTIONPHRASELIST - INSTRUCTIONS FOR USE
+    #
+    # If any of the phrases listed below appear in a web page
+    # then it will bypass the filtering and be allowed through
+    # eg
+    # < medical >
+    #
+    #
+    # Combinations
+    # Unblock the page if the following phrases are found on the same page.
+    # Each line is a new combination.
+    # eg
+    #<education>,<biology>,<medical>
+    #
+    # See the bannedphraselist for more examples.
+
+    # Use this sparingly as can easily make exceptions of unsuitable urls
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/goodphrases/exception_email>
+{{include "includePhraseLists" (dict "Values" .Values "listName" "exceptionphraselist")}}
+  exceptionregexpheaderlist: |
+    #Allowed outgoing HTTP headers based on regular expressions
+    #
+    # E.g. 'User-Agent: .*MSIE' would allow several versions of Internet Explorer
+    # (assuming the user-agent is not being spoofed by the client)
+    #
+    # Headers are matched line-by-line, not as a single block.
+
+    #listcategory: "Allowed Regular Expression HTTP Headers"
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionregexpheaderlist")}}
+  exceptionregexpurllist: |+
+    #Exception URLs based on Regular Expressions
+    #
+    # E.g. 'news' would unblock news.bbc.com etc
+
+    # Example
+    #news
+
+    # Prevent content scanning of CSS and/or JavaScript files
+    #^[^?]*\.css($|\?)
+    #^[^?]*\.jsp?($|\?)
+
+    # Allow Facebook plugin applications like
+    # http://apps.facebook.com/neighborhoods/Setup.aspx and others.
+{{- if .Values.e2guardianConf.defaultConfig }}
+    mock_ajax_proxy.php
+{{- end }}
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionregexpurllist")}}
+  exceptionregexpuseragentlist: |
+    #Exception User-Agent based on regular expressions
+    #
+    # E.g. ' .*MSIE' would allow several versions of Internet Explorer
+    # (assuming the user-agent is not being spoofed by the client)
+    #
+    # Usefull for allowing 'apps' to work
+    # E.g. 'Kindle' would make kindle app an exception 
+
+    #listcategory: "user-agent"
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionregexpuseragentlist")}}
+  exceptionsiteiplist: |+
+    #IP Sites in exception list
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionsiteiplist")}}
+  exceptionsitelist: |+
+    #Sites in exception list
+    #Don't bother with the www. or
+    #the http://
+    #
+    #These are specifically domains and are not URLs.
+    #For example 'foo.bar/porn/' is no good, you need
+    #to just have 'foo.bar'.
+    #
+    # IP must be put in exceptionsiteiplist
+    #
+    #.tld so for example you can match .gov for example
+
+
+    # Time limiting syntax:
+    # #time: <start hour> <start minute> <end hour> <end minute> <days>
+    # Example:
+    ##time: 9 0 17 0 01234
+    # Remove the first # from the line above to enable this list only from
+    # 9am to 5pm, Monday to Friday.
+
+    # NOTE: From v5 Blanket exceptions are now implemented using Storyboarding 
+    # WARNING: Old style Blanket blocks in this file will be silently ignored
+{{- if .Values.e2guardianConf.defaultConfig }}
+    windowsupdate.microsoft.com
+{{- end }}
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionsitelist")}}
+  exceptionurllist: |
+    #URLs in exception list
+    #Don't bother with the www. or
+    #the http://
+    #
+    #These are parts of sites that filtering should
+    #be switched off for.
+    #
+    #These should not be domains, i.e. entire sites,
+    #they should be a domain with a path.
+    #
+    #For example 'foo.bar' is no good, you need
+    #to just have 'foo.bar/porn/'.
+    #
+    #Another example:
+    #generallybadsite.tld/partthatsok/
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionurllist")}}
+  exceptionvirusextensionlist: |
+    # Exception file extension list
+    # Use as a filter group's "exceptionvirusextensionlist",
+    #
+    # Default list:
+    # Unblock web pages & graphics
+
+    # Text/web document types
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .css
+    .html
+    .shtml
+    .htm
+    .stm
+    .asp
+    .php
+    .txt
+    .rtx
+    .xml
+    .xsl
+    .cgi
+    .pl
+
+    # Image types
+
+    .bmp
+    .cod
+    .gif
+    .ief
+    .jpe
+    .jpeg
+    .jpg
+    .jfif
+    .tif
+    .tiff
+    .ras
+    .cmx
+    .ico
+    .pnm
+    .pbm
+    .pgm
+    .ppm
+    .rgb
+    .xbm
+    .xpm
+    .xwd
+{{- end }}
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionvirusextensionlist")}}
+  exceptionvirussiteiplist: |+
+    # IP sites in exceptionvirussiteiplist 
+
+    #The exceptionvirussiteiplist is for allowing ALL of an IP site
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "exceptionvirussiteiplist")}}
+  greysiteiplist: |+
+    # IP site in grey list
+
+    #The 'grey' lists override the 'banned' lists.
+    #The 'exception' lists override the 'banned' lists also.
+    #The difference is that the 'exception' lists completely switch
+    #off *all* other filtering for the match.  'grey' lists only
+    #stop the URL filtering and allow the normal filtering to work.
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "greysiteiplist")}}
+  greysitelist: |+
+    #domains in grey list
+    #Don't bother with the www. or the http://
+
+    #The 'grey' lists override the 'banned' lists.
+    #The 'exception' lists override the 'banned' lists also.
+    #The difference is that the 'exception' lists completely switch
+    #off *all* other filtering for the match.  'grey' lists only
+    #stop the URL filtering and allow the normal filtering to work.
+
+    #An example of grey list use is when in Blanket Block (whitelist)
+    #mode and you want to allow some sites but still filter as normal
+    #on their content
+
+    #Another example of grey list use is when you ban a site but want
+    #to allow part of it.
+
+    #The greyurllist is for partly unblocking PART of a site
+    #The greysitelist is for partly unblocking ALL of a site
+
+    #As of DansGuardian 2.7.3 you can now include
+    #.tld so for example you can match .gov for example
+
+    #To include additional files in this list use this example:
+    #.Include</etc/e2guardian/anotherurllist>
+
+    #You can have multiple .Includes.
+
+    # Time limiting syntax:
+    # #time: <start hour> <start minute> <end hour> <end minute> <days>
+    # Example:
+    ##time: 9 0 17 0 01234
+    # Remove the first # from the line above to enable this list only from
+    # 9am to 5pm, Monday to Friday.
+
+
+    # Blanket match.  To greylist all sites except those in the
+    # exceptionsitelist and greysitelist files, remove
+    # the # from the next line to leave only a '**':
+    #**
+
+    # Blanket SSL/CONNECT match.  To greylist all SSL 
+    # and CONNECT tunnels except to addresses in the
+    # exceptionsitelist and greysitelist files, remove
+    # the # from the next line to leave only a '**s':
+    #**s
+
+    # Blanket IP match.  To greylist all sites specified only as an IP,
+    # remove the # from the next line to leave only a '*ip':
+    #*ip
+
+    # Blanket SSL/CONNECT IP match.  To greylist all SSL and CONNECT
+    # tunnels to sites specified only as an IP,
+    # remove the # from the next line to leave only a '*ips':
+    #*ips
+
+
+    #List other sites to greylist:
+
+    #www.bbc.co.uk
+{{include "includeLists" (dict "Values" .Values "listName" "greysitelist")}}
+  greysslsiteiplist: |
+    # IP sites in SSL grey list
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "greysslsiteiplist")}}
+  greysslsitelist: |
+    #domains in SSL grey list
+    #Don't bother with the www. or the https://
+
+    #This 'grey' lists override the 'banned' lists for SSL only.
+{{include "includeLists" (dict "Values" .Values "listName" "greysslsitelist")}}
+  greyurllist: |
+    #URLs in grey list
+    #Don't bother with the http:// or the www
+
+    #The greyurllist is for partly unblocking PART of a site
+    #The greysitelist is for partly unblocking ALL of a site
+
+    #The 'grey' lists override the 'banned' lists.
+    #The 'exception' lists override the 'banned' lists also.
+    #The difference is that the 'exception' lists completely switch
+    #off *all* other filtering for the match.  'grey' lists only
+    #stop the URL filtering and allow the normal filtering to work.
+
+    #An example of grey list use is when in Blanket Block (whitelist)
+    #mode and you want to allow some sites but still filter as normal
+    #on their content
+
+    #Another example of grey list use is when you ban a site but want
+    #to allow part of it.
+
+    #To include additional files in this list use this example:
+    #.Include</etc/e2guardian/anotherurllist>
+
+    #You can have multiple .Includes.
+
+    #List other URLs to block:
+
+    #members.home.net/nice
+{{include "includeLists" (dict "Values" .Values "listName" "greyurllist")}}
+  headerregexplist: |
+    # Outgoing HTTP request header modifying Regular Expressions
+    #
+    # The format is: "extended regular expression"->"replacement straight string"
+    # E.g. "shit"->"censored" would replace all occurances of shit in any case.
+    # Far more complicated matches are possible.  See other sources for examples
+    # of extended regular expressions.
+    #
+    # Headers are run through replacements line-by-line, not as a single block.
+    #
+    # To remove a header put "X-E2G-IgnoreMe:" as the replacement
+    # e.g. to remove 'upgrade:' headers
+    #"upgrade:.*$"->"X-E2G-IgnoreMe:"
+
+    # Windows Live Search cookie replacement - force filtering on
+    #"cookie:(.*)&ADLT=(OFF|DEMOTE)"->"Cookie:$1&ADLT=STRICT"
+{{include "includeLists" (dict "Values" .Values "listName" "headerregexplist")}}
+  ipnobypass: |+
+    # User are not allowed to bypass IP sites in this list
+
+    #
+    # This is not the IP of web servers
+    # you want to filter.
+
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "ipnobypass")}}
+  localbannedsearchlist: |
+    #Local Banned Search Words
+    #
+    #Words must be in alphabetic order within a single line
+    # and separated by a '+' sign.
+    #All combinations of the words will be blocked
+    # e.g.   girl+naughty
+    #     will block  naughty+girl as well as girl+naughty
+
+
+    #.Include</home/dg/etc/local/lists/local_block_all/bannedsearchterms>
+    #.Include</home/dg/etc/local/lists/porn/bannedsearchterms>
+    #.Include</home/dg/etc/local/lists/proxy/bannedsearchterms>
+    #.Include</home/dg/etc/local/lists/hacking/bannedsearchterms>
+    #.Include</home/dg/etc/local/lists/drugs/bannedsearchterms>
+{{include "includeLists" (dict "Values" .Values "listName" "localbannedsearchlist")}}
+  localbannedsiteiplist: |
+    # IP sites in local banned list
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "localbannedsiteiplist")}}
+  localbannedsitelist: |
+    #domains in local banned list
+    #.Include</home/dg/etc/local/lists/local_block_all/domains>
+    #.Include</home/dg/etc/local/lists/porn/domains>
+    #.Include</home/dg/etc/local/lists/proxy/domains>
+    #.Include</home/dg/etc/local/lists/hacking/domains>
+    #.Include</home/dg/etc/local/lists/drugs/domains>
+{{include "includeLists" (dict "Values" .Values "listName" "localbannedsitelist")}}
+  localbannedsslsiteiplist: "# IP sites in local banned ssl list\n#This list is only
+    used for SSL (or CONNECT) requests\n#Unlike the bannedsitelist it overides all
+    other lists\n\n# IP site addresses \n#\n# Single IPs, ranges and subnets can be
+    used,\n# e.g.\n# 192.168.0.1\n# 10.0.0.1-10.0.0.3\n# 10.0.0.0/24\n#\n"
+{{include "includeLists" (dict "Values" .Values "listName" "localbannedsslsiteiplist")}}
+  localbannedsslsitelist: |
+    #domains in banned ssl list
+    #Don't bother with the www. or the https://
+    #This list is only used for SSL (or CONNECT) requests
+    # and has no effect when MITM is enabled
+    #Unlike the bannedsitelist it overides all other lists
+{{include "includeLists" (dict "Values" .Values "listName" "localbannedsslsitelist")}}
+  localbannedurllist: |
+    #URLs in local banned list
+{{include "includeLists" (dict "Values" .Values "listName" "localbannedurllist")}}
+  localexceptionsiteiplist: |+
+    #IP Sites in local exception list
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "localexceptionsiteiplist")}}
+  localexceptionsitelist: |
+    #Sites in local exception list
+{{include "includeLists" (dict "Values" .Values "listName" "localexceptionsitelist")}}
+  localexceptionurllist: |
+    #URLs in local exception list
+{{include "includeLists" (dict "Values" .Values "listName" "localexceptionurllist")}}
+  localgreysiteiplist: |
+    # IP sites in local SSL grey list
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "localgreysiteiplist")}}
+  localgreysitelist: |
+    #domains in local grey list
+{{include "includeLists" (dict "Values" .Values "listName" "localgreysitelist")}}
+  localgreysslsiteiplist: |
+    # IP sites in local SSL grey list
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "localgreysslsiteiplist")}}
+  localgreysslsitelist: |
+    #domains in SSL grey list
+    #Don't bother with the www. or the https://
+
+    #This 'grey' lists overrides the main site 'exception' lists for SSL allowing MITM to be enabled in order to check https full url.
+
+    # Use to overcome issue where ssl url is in local blocked url list but is overriden by main site exception list forcing tunnel mode and so url never checked. 
+{{include "includeLists" (dict "Values" .Values "listName" "localgreysslsitelist")}}
+  localgreyurllist: |
+    #URLs in local grey list
+{{include "includeLists" (dict "Values" .Values "listName" "localgreyurllist")}}
+  logregexpurllist: |
+    # Log regular expression URL list
+    #
+    # This acts as a list of URL regexes which, if matched, will have their category
+    # recorded but no specific filtering action taken.  It is only really useful
+    # in conjunction with log analysers, to perform meaningful categorisation and
+    # analysis upon non-blocked/exception requests, and so is disabled and empty
+    # by default.
+    #
+    # If you would like to enable this feature, uncomment "logregexpurllist" in your
+    # e2guardianf*.conf file(s), and place .Include<> statements here for the
+    # categories you would like to log.  Included list files must contain a
+    # "#listcategory" directive.
+{{include "includeLists" (dict "Values" .Values "listName" "logregexpurllist")}}
+  logsiteiplist: |+
+    # Log IP site list
+    #
+    # This acts as a list of IP sites which, when found, will have their category
+    # recorded but no specific filtering action taken.  It is only really useful
+    # in conjunction with log analysers, to perform meaningful categorisation and
+    # analysis upon non-blocked/exception requests, and so is disabled and empty
+    # by default.
+    #
+    # If you would like to enable this feature, uncomment "logsitelist" in your
+    # e2guardianf*.conf file(s), and place .Include<> statements here for the
+    # categories you would like to log.  Included list files must contain a
+    # "#listcategory" directive.
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "logsiteiplist")}}
+  logsitelist: |
+    # Log site list
+    #
+    # This acts as a list of domains which, when found, will have their category
+    # recorded but no specific filtering action taken.  It is only really useful
+    # in conjunction with log analysers, to perform meaningful categorisation and
+    # analysis upon non-blocked/exception requests, and so is disabled and empty
+    # by default.
+    #
+    # If you would like to enable this feature, uncomment "logsitelist" in your
+    # e2guardianf*.conf file(s), and place .Include<> statements here for the
+    # categories you would like to log.  Included list files must contain a
+    # "#listcategory" directive.
+{{include "includeLists" (dict "Values" .Values "listName" "logsitelist")}}
+  logurllist: |
+    # Log URL list
+    #
+    # This acts as a list of URLs which, when found, will have their category
+    # recorded but no specific filtering action taken.  It is only really useful
+    # in conjunction with log analysers, to perform meaningful categorisation and
+    # analysis upon non-blocked/exception requests, and so is disabled and empty
+    # by default.
+    #
+    # If you would like to enable this feature, uncomment "logurllist" in your
+    # e2guardianf*.conf file(s), and place .Include<> statements here for the
+    # categories you would like to log.  Included list files must contain a
+    # "#listcategory" directive.
+{{include "includeLists" (dict "Values" .Values "listName" "logurllist")}}
+  nocheckcertsiteiplist: |
+    # IP sites which are NOT to have their certificates checked (when in MITM mode)
+    #
+    # Do not check ssl certificates for IP sites listed
+    #
+    # Can be used to allow sites with self-signed or invalid certificates
+    # or to reduced CPU load by not checking certs on heavily used sites (e.g. Google, Bing)
+    # Use with caution!
+    # Ignored if mitmcheckcert is 'off'
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "nocheckcertsiteiplist")}}
+  nocheckcertsitelist: |
+    # domains which are NOT to have their certificates checked (when in MITM mode)
+    #
+    # Do not check ssl certificates for sites/domains listed
+    #
+    # Can be used to allow sites with self-signed or invalid certificates
+    # or to reduced CPU load by not checking certs on heavily used sites (e.g. Google, Bing)
+    # Use with caution!
+    # Ignored if mitmcheckcert is 'off'
+    #Don't bother with the https://
+{{include "includeLists" (dict "Values" .Values "listName" "nocheckcertsitelist")}}
+  oldbannedphraselist: |+
+    # BANNEDPHRASELIST - INSTRUCTIONS FOR USE
+    #
+    # To block any page with the word "sex".
+    # < sex >
+    #
+    # To block any page with words that contain the string "sex". (ie. sexual)
+    # <sex>
+    #
+    # To block any page with the string "sex magazine".
+    # <sex magazine>
+    #
+    # To block any page containing the words/strings "sex" and "fetish".
+    # <sex>,<fetish>
+    #
+    # < test> will match any word with the string 'test' at the beginning
+    # <test > will match any word with the string 'test' at the end
+    # <test> will match any word with the string 'test' at any point in the word
+    # < test > will match only the word 'test'
+    # <this is a test phrase> will match that exact phrase
+    # <test>,<secondtest> will match if both words are found in the page
+    # A combination of the above can also be used eg < test>,<secondtest>
+    #
+    #
+    # Extra phrase-list files to include
+    # .Include</etc/e2guardian/testphrase>
+    #
+    #
+    # All phrases need to be within < and > to work, othewise they will be
+    # ignored.
+
+    # MORE EXAMPLE LISTS CAN BE DOWNLOADED FROM DANSGUARDIAN.ORG
+
+    # Phrase Exceptions are no longer listed in this file, they are now
+    # listed in the exceptionphraselist file.
+    #
+
+    #listcategory: "Banned Phrases"
+
+    # The following banned phraselists enable Website Content Labeling systems.  These are enabled by default, but may also be activated using phraselists.  
+
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/safelabel/banned>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/rta/banned_portuguese>
+
+    # The following banned oldphraselists are included in the default DG distribution.
+
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/banned>
+    ##.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/banned_portuguese>
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/illegaldrugs/banned>
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/gambling/banned>
+    ##.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/gambling/banned_portuguese>
+
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/googlesearches/banned>
+
+  oldexceptionphraselist: |
+    # EXCEPTIONPHRASELIST - INSTRUCTIONS FOR USE
+    #
+    # If any of the phrases listed below appear in a web page
+    # then it will bypass the filtering and be allowed through
+    # eg
+    # < medical >
+    #
+    #
+    # Combinations
+    # Unblock the page if the following phrases are found on the same page.
+    # Each line is a new combination.
+    # eg
+    #<education>,<biology>,<medical>
+    #
+    # See the bannedphraselist for more examples.
+
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/exception>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/exception_email>
+  oldweightedphraselist: |+
+    # E2GUARDIAN weightedphraselist INSTRUCTIONS FOR USE
+
+    # New in v5.2 - per cent feature
+
+    # If weighting is a % then that % of the naughtynesslimit is used as the weight
+    # e.g.  
+    # < slut ><10%>
+    # - If naughtynesslimit is 200 will add 20 to the count against the word 'slut'
+    #
+    # This allows phrases to be used which will have the same effect in all
+    # filtergroups
+
+    #
+    # Examples:
+    #
+    # <slut><10>			
+    # - Adds 10 to the count against the string 'slut'.   ie. sluts, slut!, abslutxyz.
+    #
+    # < slut ><10>
+    # - Adds 10 to the count against the word 'slut'.   ie. Sally is a slut that smells.
+    #
+    # <slut>,<horny><50>
+    # - Adds 50 to the count when the strings 'slut' and 'horny' are found on the same page.
+    #
+    # <breast>,<medical><-30>
+    # - Subtracts 30 from the count when 'breast' and 'medical' are on the one page.
+    #
+    # <education><-25>
+    # - Subtracts 25 from the count when 'education' is on the page.
+    #
+    # See the bannedphraselist for more examples.
+    #
+    # Extra weighted-list files to include
+    # .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/weightedphraselist.topic>
+    #
+    # Help by contributing customised lists and/or new keyword lists. 
+    # Email: pornmastergeneral@e2guardian.org or phrasemaster@e2guardian.org
+    #
+    # NOTE: New lists are commented out as ALPHA or BETA depending on how much the 
+    # lists have been tested.
+    # ALPHA - Brand new and/or incomplete - little testing has been done
+    # BETA - Relatively new - tested in several locations
+    #
+
+    #listcategory: "Weighted Phrases"
+
+    #To enable several non-PICS self-labelling and self-rating systems.  
+    #Enabled as a bannedsitelist by default.  Disable there before enabling as a phraselist.
+    ##.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/safelabel/weighted>
+
+    #Good Phrases (to allow medical, education, news and other good sites)
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_general>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_news>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_general_danish>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_general_dutch>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_general_malay>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_general_polish>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_general_portuguese>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/goodphrases/weighted_general_swedish>
+
+    #Pornography
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_chinese> #ALPHA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_danish> #ALPHA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_dutch> #BETA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_french>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_german>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_italian>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_japanese> #ALPHA# #Disabled due to overblocking#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_malay> #BETA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_norwegian> #BETA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_polish>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_portuguese>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_russian> #BETA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_russian_utf8> #BETA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_spanish> #ALPHA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/pornography/weighted_swedish>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/nudism/weighted>
+
+    #Bad Words - swearing
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/badwords/weighted_dutch> 
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/badwords/weighted_french>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/badwords/weighted_german> #ALPHA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/badwords/weighted_portuguese> #ALPHA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/badwords/weighted_spanish> #ALPHA#
+
+    #Drugs
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/drugadvocacy/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/illegaldrugs/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/illegaldrugs/weighted_portuguese>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/legaldrugs/weighted>
+
+    #Violence and intolerance
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/intolerance/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/intolerance/weighted_portuguese>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/gore/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/gore/weighted_portuguese>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/violence/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/violence/weighted_portuguese>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/weapons/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/weapons/weighted_portuguese>
+
+    #Chat
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/chat/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/chat/weighted_italian>
+
+    #Webmail
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/webmail/weighted>
+    #Note that if you enable the webmail weighted list you should also disable 
+    #the "exception_email" list in the exceptionphraselist file.
+
+    #Forums
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/forums/weighted> #BETA#
+
+    #Gambling
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/gambling/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/gambling/weighted_portuguese>
+
+    #Productivity
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/games/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/news/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/personals/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/personals/weighted_portuguese>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/sport/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/travel/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/music/weighted>
+
+    #System Management and Security
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/domainsforsale/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/idtheft/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/malware/weighted> #BETA#
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/proxies/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/translation/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/upstreamfilter/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/warezhacking/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/peer2peer/weighted>
+
+    #Miscellaneous	
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/conspiracy/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/oldphraselists/secretsocieties/weighted>
+
+  refererexceptionsiteiplist: |
+    # Exception referer IP sites
+    #  sites which are refered to by these sites will be made exceptions
+
+    # IP site addresses 
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "refererexceptionsiteiplist")}}
+  refererexceptionsitelist: |
+    # Exception referer sites
+    #  sites which are refered to by these sites will be made exceptions
+{{include "includeLists" (dict "Values" .Values "listName" "refererexceptionsitelist")}}
+  refererexceptionurllist: |
+    # Referer URLs - Sites refered to by these URLs will be made exception
+{{include "includeLists" (dict "Values" .Values "listName" "refererexceptionurllist")}}
+  responseheaderregexplist: |+
+    # HTTP response header modifying Regular Expressions
+    #
+    # The format is: "extended regular expression"->"replacement straight string"
+    # E.g. "shit"->"censored" would replace all occurances of shit in any case.
+    # Far more complicated matches are possible.  See other sources for examples
+    # of extended regular expressions.
+    #
+    # Headers are run through replacements line-by-line, not as a single block.
+    #
+    # To remove a header put "X-E2G-IgnoreMe:" as the replacement
+    # e.g. to remove 'upgrade:' headers
+    #"upgrade:.*$"->"X-E2G-IgnoreMe:"
+{{include "includeLists" (dict "Values" .Values "listName" "responseheaderregexplist")}}
+  sslsiteregexplist: |+
+    #SSL site modifying Regular Expressions
+    #
+    # The format is: "extended regular expression"->"replacement straight string"
+    # E.g. "shit"->"censored" would replace all occurances of shit in any case.
+    # Far more complicated matches are possible.  See other sources for examples
+    # of extended regular expressions.
+    #
+    # Users are pointed at the replaced site transparently.
+    # This is used to 'cname' ssl sites and avoids having to adjust DNS
+    # and allows option of switching off/on depending on filter group.
+
+    # This list applies to the site only (not full URL) for 
+    #   HTTPS sites (regardless of SSL MITM configuration).
+
+    # Do not use patterns with full urls in this list as they can never
+    #   match the site name.
+
+    # Enforce restricted mode in YouTube
+    #
+    #"(^https://www.youtube.com)"->"https://restrict.youtube.com"
+    #"(^https://m.youtube.com)"->"https://restrict.youtube.com"
+    #"(^https://youtubei.googleapis.com)"->"https://restrict.youtube.com"
+    #"(^https://youtube.googleapis.com)"->"https://restrict.youtube.com"
+    #"(^https://www.youtube-nocookie.com)"->"https://restrict.youtube.com"
+    #
+    # Enforce restricted mode in Google
+    #
+    #"(^https://www\.google\.[a-zA-Z0-9_.]*$)"->"https://forcesafesearch.google.com"
+    #"(^https://.*\.gstatic\.com$)"->"https://forcesafesearch.google.com"
+{{include "includeLists" (dict "Values" .Values "listName" "sslsiteregexplist")}}
+  urlnobypass: |+
+    # User are not allowed to bypass url sites in this list
+
+    #Don't bother with the www. or the http://
+
+    #NOTE: Sites using just IP should be put into bannedsiteiplistwithbypass
+
+    #You can have multiple .Includes.
+
+    # WARNING: Old style Blanket blocks in this file will be silently ignored
+
+    #To include additional files in this list use this example:
+    #.Include<{{ .Values.e2guardianConfigDir }}/anotherbannedurllist>
+
+    #You can have multiple .Includes.
+
+    #listcategory: "Banned URLs"
+
+    #List other URLs to block:
+
+    # members.home.net/uporn
+
+    # The squidGuard advert domain/URL lists are now included by default.
+    # To work with advanced ad blocking & the logadblocks option, advert
+    # phrase/site/URL lists should have the string "ADs" in their listcategory.
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/ads/urls>
+
+    #Remove the # from the following and edit as needed to use a stock
+    #squidGuard/urlblacklist blacklists collection.
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/adult/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/aggressive/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/audio-video/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/chat/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/drugs/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/entertainment/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/frencheducation/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/gambling/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/government/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/hacking/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/jobsearch/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/kidstimewasting/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/mail/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/news/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/porn/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/proxy/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/publicite/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/redirector/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/violence/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/virusinfected/urls>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/blacklists/warez/urls>
+    # You will need to edit to add and remove categories you want
+{{include "includeLists" (dict "Values" .Values "listName" "urlnobypass")}}
+  urlredirectregexplist: |
+    #
+    # redirect browser to different url
+    #
+    # 'regexp_pattern'->'url_to_redirect_to'
+{{include "includeLists" (dict "Values" .Values "listName" "urlredirectregexplist")}}
+  urlregexplist: |+
+    #URL modifying Regular Expressions
+    #
+    #This list applies to the full URL for HTTP sites, and if configured 
+    #for SSL MITM, also HTTPS urls.
+    #
+    # The format is: "extended regular expression"->"replacement straight string"
+    # E.g. "shit"->"censored" would replace all occurances of shit in any case.
+    # Far more complicated matches are possible.  See other sources for examples
+    # of extended regular expressions.
+    #
+    # Users are pointed at the replaced URL transparently.
+    # Manipulates the URL to automatically switch on safe searching in Google,
+    # Singingfish, Ilse, KEL, Lycos, Alltheweb, Yahoo, Hotbot, Wisenut,
+    # Metacrawler.
+    # Google, Go etc. - remove 'safe=...'
+    #"(^http://[0-9a-z]+\.google\.[a-z]+[-/%.0-9a-z]*/images\?)(.*)(&?)(safe=[^&]*)"->"\1\2\3"
+    # ... and add 'safe=vss'
+    #"(^http://[0-9a-z]+\.google\.[a-z]+[-/%.0-9a-z]*/images\?)"->"\1safe=vss&"
+
+    # Singingfish - remove 'ff=...' and add 'ff=1'
+    #"(^http://search\.singingfish\.com/[-/%.0-9a-z]*\?)(.*)(&?)(ff=[^&]*)"->"\1\2\3"
+
+    #"(^http://search\.singingfish\.com/[-/%.0-9a-z]*\?)"->"\1ff=1&"
+
+    # Ilse - remove 'family=...' and add 'family=yes'
+    #"(^http://www\.ilse\.nl/searchresults\.dbl\?)(.*)(&?)(family=[^&]*)"->"\1\2\3"
+    #"(^http://www\.ilse\.nl/searchresults\.dbl\?)"->"\1family=yes&"
+
+    # KEL - remove 'Realm%3AErotiek=...'
+    #"(^http://www\.kel\.nl/search/search.cgi\?)(.*)(&?)(Realm%3AErotiek=[^&]*)"->"\1\2\3"
+
+    # Lycos.com - family filter only available in advanced mode.
+    # Remove 'adv=...' and 'adf=...' and add 'adv=1&adf=on'
+    #"(^http://[^/]*search[^/]*\.lycos\.com/[-/%.0-9a-z]*\?)(.*)(&?)(adv=[^&]*)"->"\1\2\3"
+    #"(^http://[^/]*search[^/]*\.lycos\.com/[-/%.0-9a-z]*\?)(.*)(&?)(xadult\.)(.*)(xadult\.)"->"\1\2\3\5"
+    #"(^http://[^/]*search[^/]*\.lycos\.com/[-/%.0-9a-z]*\?)"->"\1adv=1&adf=on&"
+
+    # Lycos.nl - remove 'family=...' and add 'family=on'
+    #"(^http://zoek\.lycos\.nl/[-/%.0-9a-z]*\?)(.*)(&?)(family=[^&]*)"->"\1\2\3"
+    #"(^http://zoek\.lycos\.nl/[-/%.0-9a-z]*\?)"->"\1family=on&"
+
+    # Alltheweb - change the customize url so that 'offensive' cannot be turned off
+    #"(^http://www\.alltheweb\.com/customize\?)(.*)(&?)(copt_offensive=[^&]*)"->"\1\2\3copt_offensive=on"
+
+    # Yahoo - remove 'vm=...' and add 'vm=r'
+    #"(^http://[.0-9a-z]+\.yahoo\.[a-z]+[-/%.0-9a-z]*/search)(.*)(&?)(vm=[^&]*)"->"\1\2\3"
+    #"(^http://[.0-9a-z]+\.yahoo\.[a-z]+[-/%.0-9a-z]*/search+.*\?)"->"\1vm=r&"
+
+    # Hotbot - remove 'adf=...' and add 'adf=on'
+    #"(^http://[0-9a-z]+\.hotbot\.[a-z]+/default\.asp\?)(.*)(&?)(adf=[^&]*)"->"\1\2\3"
+    #"(^http://[0-9a-z]+\.hotbot\.[a-z]+/default\.asp\?)"->"\1adf=on&"
+
+    # Wisenut - change the customize url so that 'wisepatrol' cannot be turned off
+    #"(^http://www\.wisenut\.com/preferences/savePreferences\.[^?]*\?)(.*)(&?)(wisepatrol=[^&]*)"->"\1\2\3wisepatrol=1"
+
+    # Metacrawler - remove 'familyfilter=...' and add 'familyfilter=1'
+    #"(^http://www\.metacrawler\.com/info\.metac/search/[-/%.0-9a-z]*\?)(.*)(&?)(familyfilter=[^&]*)"->"\1\2\3"
+    #"(^http://www\.metacrawler\.com/info\.metac/search/[-/%.0-9a-z]*\?)"->"\1familyfilter=1&"
+{{include "includeLists" (dict "Values" .Values "listName" "urlregexplist")}}
+  weightedphraselist: |+
+    # E2GUARDIAN weightedphraselist INSTRUCTIONS FOR USE
+
+    # New in v5.2 - per cent feature
+
+    # If weighting is a % then that % of the naughtynesslimit is used as the weight
+    # e.g.  
+    # < slut ><10%>
+    # - If naughtynesslimit is 200 will add 20 to the count against the word 'slut'
+    #
+    # This allows phrases to be used which will have the same effect in all
+    # filtergroups
+
+    #
+    # Examples:
+    #
+    # <slut><10>			
+    # - Adds 10 to the count against the string 'slut'.   ie. sluts, slut!, abslutxyz.
+    #
+    # < slut ><10>
+    # - Adds 10 to the count against the word 'slut'.   ie. Sally is a slut that smells.
+    #
+    # <slut>,<horny><50>
+    # - Adds 50 to the count when the strings 'slut' and 'horny' are found on the same page.
+    #
+    # <breast>,<medical><-30>
+    # - Subtracts 30 from the count when 'breast' and 'medical' are on the one page.
+    #
+    # <education><-25>
+    # - Subtracts 25 from the count when 'education' is on the page.
+    #
+    # See the bannedphraselist for more examples.
+    #
+    # Help by contributing customised lists and/or new keyword lists. 
+    # Email: maintianer@e2guardian.org
+    #
+
+    #listcategory: "Weighted Phrases"
+
+    #To enable several non-PICS self-labelling and self-rating systems.  
+    #Enabled as a bannedsitelist by default.  Disable there before enabling as a phraselist.
+    ##.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/safelabel/weighted>
+
+    #Good Phrases (to allow medical, education, news and other good sites)
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/goodphrases/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/goodphrases/weighted_news>
+{{- end }}
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/danish/goodphrases/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/dutch/goodphrases/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/malay/goodphrases/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/polish/goodphrases/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/goodphrases/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/swedish/goodphrases/weighted>
+
+    #Pornography
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/pornography/weighted>
+{{- end }}
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/chinesebig5/pornography/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/chinesegb2312/pornography/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/danish/pornography/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/dutch/pornography/weighted> #BETA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/french/pornography/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/german/pornography/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/italian/pornography/weighted>
+    ##.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/japanese/pornography/weighted> #ALPHA# #Disabled due to overblocking#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/malay/pornography/weighted> #BETA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/norwegian/pornography/weighted> #BETA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/polish/pornography/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/pornography/weighted>
+    ##.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/russian-1251/pornography/weighted> #BETA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/russian-koi8-r/pornography/weighted> #BETA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/spanish/pornography/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/swedish/pornography/weighted>
+
+    #Nudism
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/nudism/weighted>
+
+    #Bad Words - swearing
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/badwords/weighted> 
+{{- end }}
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/dutch/badwords/weighted> 
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/french/badwords/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/german/badwords/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/badwords/weighted> #ALPHA#
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/spanish/badwords/weighted> #ALPHA#
+
+    #Drugs
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/drugadvocacy/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/illegaldrugs/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/illegaldrugs/weighted>
+
+    #Violence and intolerance
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/intolerance/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/gore/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/violence/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/weapons/weighted>
+{{- end }}
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/intolerance/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/gore/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/violence/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/weapons/weighted>
+
+    #Chat
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/chat/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/italian/chat/weighted>
+
+
+    #Gambling
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/gambling/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/gambling/weighted>
+
+    #Productivity
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/games/weighted> 
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/personals/weighted>
+    #.Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/portuguese/personals/weighted>
+
+    #System Management and Security
+{{- if .Values.e2guardianConf.defaultConfig }}
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/proxies/weighted>
+    .Include<{{ .Values.e2guardianConfigDir }}/lists/phraselists/ukenglish/warezhacking/weighted>
+{{- end }}
+{{include "includeWeightedPhraseLists" (dict "Values" .Values "listName" "weightedphraselist")}}
+kind: ConfigMap
+metadata:
+  name: e2guardian-lists

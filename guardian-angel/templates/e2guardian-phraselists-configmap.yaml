@@ -1,0 +1,31 @@
+apiVersion: v1
+data:
+{{- range .Values.e2guardianConf.phraseLists }}
+{{- $list := . -}}
+{{ print "\n  "}}{{ $list.name }}: |
+{{- range $list.groups }}
+{{- $group := . -}}
+{{- if $group.name }}
+{{print "\n    "}}#listcategory: {{ $group.name }}
+{{- end }}
+{{- range $group.phrases }}
+{{- $phrase := . -}}
+{{print "\n    "}}{{ $phrase }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.e2guardianConf.weightedPhraseLists }}
+{{- $list := . -}}
+{{ print "\n  "}}{{ $list.name }}: |
+{{- range $list.groups }}
+{{- $group := . -}}
+{{- if $group.name }}
+{{print "\n    "}}#listcategory: {{ $group.name }}
+{{- end }}
+{{- range $group.phrases }}
+{{- $phrase := . -}}
+{{print "\n    "}}{{ $phrase.phrase }}<{{ $phrase.weight }}>
+{{- end }}
+{{- end }}
+{{- end }}
