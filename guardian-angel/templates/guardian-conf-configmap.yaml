@@ -47,6 +47,5 @@ data:
       "helper": {
         "host": "{{ .Values.lookupHostName }}",
         "port": {{ .Values.internalHttpPort }}
-      },
-      "e2guardianConf": {{ .Values.e2guardianConfig }}
+      }
     }

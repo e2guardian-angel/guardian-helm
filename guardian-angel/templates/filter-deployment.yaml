@@ -14,7 +14,9 @@ spec:
       annotations:
         allowrules/hash: {{ .Values.allowRules | toString | sha1sum | quote }}
         decryptrules/hash: {{ .Values.decryptRules | toString | sha1sum | quote }}
-        e2gconf/hash: {{ .Values.e2guardianConfig | sha1sum | quote }}
+{{- if .Values.decryptHTTPS }}
+        e2gconf/hash: {{ .Values.e2guardianConf | toString | sha1sum | quote }}
+{{- end }}
 {{- if .Values.tls }}
         cert/hash: {{ .Values.tls.cert | sha1sum | quote }}
         key/hash: {{ .Values.tls.key | sha1sum | quote }}

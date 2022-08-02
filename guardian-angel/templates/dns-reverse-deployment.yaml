@@ -29,6 +29,15 @@ spec:
               protocol: UDP
             - containerPort: {{ .Values.publicDnsPort }}
               protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: '{{ .Values.redisHost }}'
+            - name: REDIS_PORT
+              value: '{{ .Values.redisPort }}'
+{{- if .Values.safeSearchEnforced }}
+            - name: SAFESEARCH
+              value: 'yes'
+{{- end }}
           envFrom:
             - secretRef:
                 name: redis-pass

@@ -39,7 +39,6 @@ decryptRules:
   decrypt: false
 e2guardianConfigDir: '/opt/etc/e2guardian'
 phraseDir: '/opt/phrases'
-e2guardianConfig: '{"phraseLists": [],"siteLists": [],"regexpurllists": [],"mimetypelists": [],"extensionslists": []}'
 e2guardianConf:
   defaultConfig: false # include e2guardian default lists
   phraseLists: []
