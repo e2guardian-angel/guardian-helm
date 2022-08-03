@@ -26,10 +26,4 @@ spec:
           env:
             - name: FORWARDER
               value: 'true'
-          volumeMounts:
-            - mountPath: {{ .Values.guardianConfigDir }}
-              name: guardian-conf-volume
-      volumes:
-        - name: guardian-conf-volume
-          configMap:
-            name: guardian-conf
+

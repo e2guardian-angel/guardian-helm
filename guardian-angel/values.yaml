@@ -6,16 +6,12 @@
 
 # Network
 localNetwork: '192.168.4.0/24'
-gatewayIP: '192.168.4.1'
-localTransparent: false # Transparently proxy traffic coming from this machine; used for local setup
 
 # Lookup service
 lookupHostName: 'guardian-angel'
 internalHttpPort: 3000
-internalHttpsPort: 3443
 safeSearchEnforced: false
 guardianConfigDir: '/opt/guardian'
-aclDatabaseFile: '/opt/guardian/acl/acls.db'
 guardianReplicas: 1
 
 # Filter
@@ -24,21 +20,15 @@ squidInternalPort: 3128
 squidPublicPort: 30128
 icapInternalPort: 1344
 squidConfigDir: '/etc/squid'
-httpsEnabled: false
 transparent: false
 decryptHTTPS: false
 allowRules:
-- category: porn
-  allow: false
 - category: all
   allow: true
 decryptRules:
-- category: streaming
-  decrypt: true
 - category: all
   decrypt: false
 e2guardianConfigDir: '/opt/etc/e2guardian'
-phraseDir: '/opt/phrases'
 e2guardianConf:
   defaultConfig: false # include e2guardian default lists
   phraseLists: []
@@ -60,16 +50,6 @@ dbInternalPort: 27017
 dbServicePort: 5432
 dbPassword: "DB_PASSWORD"
 guardianDbReplicas: 1
-
-# CA cert info
-caCountry: 'US'
-caState: 'TX'
-caCity: 'Austin'
-caOrg: 'GuardianAngel'
-caOrgUnit: 'RootCerts'
-caCommonName: 'guardian.angel'
-caEmail: 'guardian.angel@example.com'
-caValidDays: 3650
 
 # Redis config
 redisHost: 'redis'
