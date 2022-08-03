@@ -19,11 +19,4 @@ spec:
       containers:
         - name: transocks
           image: jusschwa/transocks-proxy
-          volumeMounts:
-            - mountPath: /opt/guardian
-              name: guardian-conf-volume
-      volumes:
-        - name: guardian-conf-volume
-          configMap:
-            name: guardian-conf
 {{- end }}

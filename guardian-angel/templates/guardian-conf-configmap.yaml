@@ -5,10 +5,6 @@ metadata:
 data:
   guardian.json: |
     {
-      "proxyPort": {{ .Values.squidInternalPort }},
-      "e2guardianConfigDir": "{{ .Values.e2guardianConfigDir }}",
-      "transparent": {{ .Values.transparent }},
-      "sslBumpEnabled": {{ .Values.decryptHTTPS }},
       "redisConfig": {
         "host": "{{ .Values.redisHost }}",
         "port": {{ .Values.redisPort }}
@@ -17,16 +13,5 @@ data:
         "ttl": {{ .Values.cacheTTL }},
         "maxKeys": {{ .Values.maxKeys }}
       },
-      "proxyHost": "{{ .Values.proxyHostName }}",
-      "httpPort": {{ .Values.internalHttpPort }},
-      "safeSearchEnforced": {{ .Values.safeSearchEnforced }},
-      "allowRules": {{ .Values.allowRules | toJson }},
-      "authDb": {
-        "host": "{{ .Values.authDbHost }}"
-      },
-      "decryptRules": {{ .Values.decryptRules | toJson }},
-      "helper": {
-        "host": "{{ .Values.lookupHostName }}",
-        "port": {{ .Values.internalHttpPort }}
-      }
+      "httpPort": {{ .Values.internalHttpPort }}
     }
