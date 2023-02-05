@@ -91,7 +91,7 @@ Add phrase list includes
 {{- range .Values.e2guardianConf.phraseLists }}
 {{- $phraseList := . -}}
 {{- if has $self.listName $phraseList.includeIn }}
-    .Include<{{ $self.Values.e2guardianConfigDir }}/lists/guardian.phrases/{{ $phraseList.name }}>
+    .Include<{{ $self.Values.e2guardianConfigDir }}/lists/guardian.phrases/{{ $phraseList.listName }}>
 {{- end }}
 {{- end }}
 {{- end }}
@@ -104,7 +104,7 @@ Add weighted phrase list includes
 {{- range .Values.e2guardianConf.weightedPhraseLists }}
 {{- $phraseList := . -}}
 {{- if has $self.listName $phraseList.includeIn }}
-    .Include<{{ $self.Values.e2guardianConfigDir }}/lists/guardian.phrases/{{ $phraseList.name }}>
+    .Include<{{ $self.Values.e2guardianConfigDir }}/lists/guardian.phrases/{{ $phraseList.listName }}>
 {{- end }}
 {{- end }}
 {{- end }}

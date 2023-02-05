@@ -2,7 +2,7 @@ apiVersion: v1
 data:
 {{- range .Values.e2guardianConf.phraseLists }}
 {{- $list := . -}}
-{{ print "\n  "}}{{ $list.name }}: |
+{{ print "\n  "}}{{ $list.listName }}: |
 {{- range $list.groups }}
 {{- $group := . -}}
 {{- if $group.name }}
@@ -10,14 +10,14 @@ data:
 {{- end }}
 {{- range $group.phrases }}
 {{- $phrase := . -}}
-{{print "\n    "}}{{ $phrase }}
+{{print "\n    "}}<{{ join ">,<" $phrase.phrase }}>
 {{- end }}
 {{- end }}
 {{- end }}
 
 {{- range .Values.e2guardianConf.weightedPhraseLists }}
 {{- $list := . -}}
-{{ print "\n  "}}{{ $list.name }}: |
+{{ print "\n  "}}{{ $list.listName }}: |
 {{- range $list.groups }}
 {{- $group := . -}}
 {{- if $group.name }}
@@ -25,7 +25,7 @@ data:
 {{- end }}
 {{- range $group.phrases }}
 {{- $phrase := . -}}
-{{print "\n    "}}{{ $phrase.phrase }}<{{ $phrase.weight }}>
+{{print "\n    "}}<{{ join ">,<" $phrase.phrase }}><{{ $phrase.weight }}>
 {{- end }}
 {{- end }}
 {{- end }}
