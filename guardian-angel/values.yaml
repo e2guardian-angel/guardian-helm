@@ -28,7 +28,7 @@ allowRules:
 decryptRules:
 - category: all
   decrypt: false
-e2guardianConfigDir: '/opt/etc/e2guardian'
+e2guardianConfigDir: '/etc/e2guardian'
 e2guardianConf:
   defaultConfig: false # include e2guardian default lists
   phraseLists: []
