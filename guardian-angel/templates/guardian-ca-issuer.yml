@@ -1,0 +1,8 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: guardian-ca-issuer
+  namespace: filter
+spec:
+  ca:
+    secretName: guardian-ca-tls

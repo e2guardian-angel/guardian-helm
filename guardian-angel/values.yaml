@@ -69,3 +69,10 @@ phraseVolumeSize: 4Gi
 
 # release tag, for CI/CD
 releaseTag: latest
+
+# Certificate Information
+commonName: guardian.angel
+organization: GuardianAngel
+country: US
+state: Texas
+locality: Austin
