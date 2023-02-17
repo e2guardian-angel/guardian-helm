@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: squid
-          image: 'jusschwa/squid-ssl:latest'
+          image: 'jusschwa/squid-ssl:{{ .Values.releaseTag }}'
           env:
             - name: LOOKUP_HOST
               value: '{{ .Values.lookupHostName }}'
@@ -41,7 +41,7 @@ spec:
             - mountPath: {{ .Values.squidConfigDir }}/ssl
               name: guardian-tls-volume
         - name: e2guardian
-          image: 'jusschwa/e2guardian-icap:latest'
+          image: 'jusschwa/e2guardian-icap:{{ .Values.releaseTag }}'
           ports:
             - containerPort: {{ .Values.icapInternalPort }}
           volumeMounts:

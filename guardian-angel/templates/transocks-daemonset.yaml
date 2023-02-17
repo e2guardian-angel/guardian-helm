@@ -18,5 +18,5 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: transocks
-          image: jusschwa/transocks-proxy
+          image: jusschwa/transocks-proxy:{{ .Values.releaseTag }}
 {{- end }}

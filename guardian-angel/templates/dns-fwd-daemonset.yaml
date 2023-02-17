@@ -17,7 +17,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: unbound
-          image: 'jusschwa/unbound-reversecache:latest'
+          image: 'jusschwa/unbound-reversecache:{{ .Values.releaseTag }}'
           ports:
             - containerPort: {{ .Values.publicDnsPort }}
               protocol: UDP

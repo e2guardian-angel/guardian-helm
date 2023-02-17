@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: guardian-angel
-          image: 'jusschwa/guardian-angel:latest'
+          image: 'jusschwa/guardian-angel:{{ .Values.releaseTag }}'
           ports:
             - containerPort: {{ .Values.internalHttpPort }}
           volumeMounts:

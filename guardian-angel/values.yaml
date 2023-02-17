@@ -66,3 +66,6 @@ maxKeys: 8192
 aclVolumeSize: 4Gi
 dbVolumeSize: 4Gi
 phraseVolumeSize: 4Gi
+
+# release tag, for CI/CD
+releaseTag: latest
