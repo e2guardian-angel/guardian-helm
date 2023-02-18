@@ -61,6 +61,7 @@ redisReplicas: 1
 nginxReplicas: 1
 webCn: admin.guardianangel.net
 webHttpsPort: 443
+webHttpsPublicPort: 30443
 
 # Cache config
 cacheTTL: 90
