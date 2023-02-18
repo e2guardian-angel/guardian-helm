@@ -17,6 +17,7 @@ spec:
       containers:
         - name: guardian-nginx
           image: 'jusschwa/guardian-nginx:{{ .Values.releaseTag }}'
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.webHttpsPort }}
               protocol: TCP
