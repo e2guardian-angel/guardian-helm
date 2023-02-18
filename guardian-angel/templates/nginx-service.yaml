@@ -9,8 +9,13 @@ spec:
   selector:
     app: guardian-nginx
   ports:
-    - name: guardian-nginx
+    - name: https
       protocol: TCP
       port: {{ .Values.webHttpsPort }}
       targetPort: {{ .Values.webHttpsPort }}
       nodePort: {{ .Values.webHttpsPublicPort }}
+    - name: http
+      protocol: TCP
+      port: {{ .Values.webHttpPort }}
+      targetPort: {{ .Values.webHttpPort }}
+      nodePort: {{ .Values.webHttpPublicPort }}

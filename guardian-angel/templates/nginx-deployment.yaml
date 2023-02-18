@@ -19,6 +19,7 @@ spec:
           image: 'jusschwa/guardian-nginx:{{ .Values.releaseTag }}'
           imagePullPolicy: Always
           ports:
+            - containerPort: {{ .Values.webHttpPort }}
             - containerPort: {{ .Values.webHttpsPort }}
               protocol: TCP
           volumeMounts:
