@@ -20,4 +20,11 @@ spec:
           ports:
             - containerPort: {{ .Values.webHttpsPort }}
               protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/nginx/ssl
+              name: nginx-tls-volume
+      volumes:
+        - name: nginx-tls-volume
+          secret:
+            secretName: nginx-tls-secret
 
