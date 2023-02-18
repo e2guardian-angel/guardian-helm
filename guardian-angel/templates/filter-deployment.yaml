@@ -17,10 +17,6 @@ spec:
 {{- if .Values.decryptHTTPS }}
         e2gconf/hash: {{ .Values.e2guardianConf | toString | sha1sum | quote }}
 {{- end }}
-{{- if .Values.tls }}
-        cert/hash: {{ .Values.tls.cert | sha1sum | quote }}
-        key/hash: {{ .Values.tls.key | sha1sum | quote }}
-{{- end }}
       labels:
         app: webfilter
     spec:
@@ -61,9 +57,7 @@ spec:
         - name: e2guardian-phrases-volume
           configMap:
             name: e2guardian-phrases
-{{- if .Values.tls }}
         - name: guardian-tls-volume
           secret:
             secretName: guardian-tls
-{{- end }}
 {{- end }}

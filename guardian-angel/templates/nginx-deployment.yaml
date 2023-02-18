@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guardian-nginx
+  labels:
+    app: guardian-nginx
+spec:
+  replicas: {{ .Values.nginxReplicas }}
+  selector:
+    matchLabels:
+      app: guardian-nginx
+  template:
+    metadata:
+      labels:
+        app: guardian-nginx
+    spec:
+      containers:
+        - name: guardian-nginx
+          image: 'jusschwa/guardian-nginx:{{ .Values.releaseTag }}'
+          ports:
+            - containerPort: {{ .Values.webHttpsPort }}
+              protocol: TCP
+

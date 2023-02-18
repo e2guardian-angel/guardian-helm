@@ -57,6 +57,11 @@ redisPort: 6379
 redisPassword: "REDIS_PASSWORD"
 redisReplicas: 1
 
+# Nginx
+nginxReplicas: 1
+webCn: admin.guardianangel.net
+webHttpsPort: 443
+
 # Cache config
 cacheTTL: 90
 maxKeys: 8192
