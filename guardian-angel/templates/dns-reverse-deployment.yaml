@@ -24,6 +24,7 @@ spec:
       containers:
         - name: unbound
           image: 'jusschwa/unbound-reversecache:{{ .Values.releaseTag }}'
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.publicDnsPort }}
               protocol: UDP

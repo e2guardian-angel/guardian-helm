@@ -19,6 +19,7 @@ spec:
       containers:
         - name: postgres
           image: 'postgres:latest'
+          imagePullPolicy: Always
           volumeMounts:
             - mountPath: {{ .Values.persistentDbPath }}
               name: guardian-db

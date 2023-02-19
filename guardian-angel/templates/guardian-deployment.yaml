@@ -25,6 +25,7 @@ spec:
       containers:
         - name: guardian-angel
           image: 'jusschwa/guardian-angel:{{ .Values.releaseTag }}'
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.internalHttpPort }}
           volumeMounts:

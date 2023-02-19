@@ -23,6 +23,7 @@ spec:
       containers:
         - name: squid
           image: 'jusschwa/squid-ssl:{{ .Values.releaseTag }}'
+          imagePullPolicy: Always
           env:
             - name: LOOKUP_HOST
               value: '{{ .Values.lookupHostName }}'
@@ -38,6 +39,7 @@ spec:
               name: guardian-tls-volume
         - name: e2guardian
           image: 'jusschwa/e2guardian-icap:{{ .Values.releaseTag }}'
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.icapInternalPort }}
           volumeMounts:

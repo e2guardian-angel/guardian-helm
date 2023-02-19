@@ -19,6 +19,7 @@ spec:
       containers:
         - name: redis
           image: 'jusschwa/redis:{{ .Values.releaseTag }}'
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.redisPort }}
               protocol: TCP
