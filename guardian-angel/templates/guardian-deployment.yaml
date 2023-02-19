@@ -35,6 +35,8 @@ spec:
             - secretRef:
                 name: redis-pass
             - secretRef:
+                name: jwt-pass
+            - secretRef:
                 name: guardian-db-creds
       volumes:
         - name: guardian-conf-volume
