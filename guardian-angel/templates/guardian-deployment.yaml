@@ -14,6 +14,7 @@ spec:
       annotations:
         redispass/hash: {{ .Values.redisPassword | sha1sum | quote }}
         dbpass/hash: {{ .Values.dbPassword | sha1sum | quote }}
+        jwtpass/hash: {{ .Values.jwtPassword | sha1sum | quote }}
 {{- if eq .Values.safeSearchEnforced true }}
         safesearch/enforced: 'yes'
 {{- else }}
@@ -28,9 +29,6 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.internalHttpPort }}
-          volumeMounts:
-            - mountPath: {{ .Values.guardianConfigDir }}/conf
-              name: guardian-conf-volume
           envFrom:
             - secretRef:
                 name: redis-pass
@@ -38,7 +36,3 @@ spec:
                 name: jwt-pass
             - secretRef:
                 name: guardian-db-creds
-      volumes:
-        - name: guardian-conf-volume
-          configMap:
-            name: guardian-conf

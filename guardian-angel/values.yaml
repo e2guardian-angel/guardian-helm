@@ -12,7 +12,6 @@ lookupHostName: 'guardian-angel'
 jwtPassword: "JWT_PASSWORD"
 internalHttpPort: 3000
 safeSearchEnforced: false
-guardianConfigDir: '/opt/guardian'
 guardianReplicas: 1
 
 # Filter
