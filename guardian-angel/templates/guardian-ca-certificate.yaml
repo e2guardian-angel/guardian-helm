@@ -6,6 +6,8 @@ metadata:
 spec:
   isCA: true
   commonName: {{ .Values.commonName }}
+  duration: {{ .Values.duration }}
+  renewBefore: {{ .Values.renewBefore }}
   secretName: guardian-ca-tls
 {{- if .Values.IpSANs }}
   ipAddresses: {{ .Values.IpSANs }}

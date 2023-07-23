@@ -81,6 +81,8 @@ releaseTag: latest
 # Certificate Information
 commonName: guardian.angel
 organization: GuardianAngel
+duration: 8670h # 1 year
+renewBefore: 360h # 15 days
 country: US
 state: Texas
 locality: Austin
