@@ -16,6 +16,14 @@ data:
     #"(^http://www\.youtube-nocookie\.com$)"->"YouTube-Restrict: Strict"
 {{include "includeLists" (dict "Values" .Values "listName" "addheaderregexplist")}}
 
+  alertcategorylist: |
+    # Categories to log into alert.log in addition to access.log
+    #    This can be monitored by a separate process to provide real time alerts via email etc
+    #    set_alertlog must be enabled in e2guardian.conf for this to work.
+    #
+    # one category per line - case is ignored
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "alertcategorylist")}}
   bannedextensionlist: |
     #Banned extension list
 
@@ -1479,6 +1487,12 @@ data:
   localgreyurllist: |
     #URLs in local grey list
 {{include "includeLists" (dict "Values" .Values "listName" "localgreyurllist")}}
+  localsemiexceptionsiteiplist: |
+    #Sites in local semi exception list
+{{include "includeLists" (dict "Values" .Values "listName" "localsemiexceptionsiteiplist")}}
+  localsemiexceptionsitelist: |
+    #Sites in local semi exception list
+{{include "includeLists" (dict "Values" .Values "listName" "localsemiexceptionsitelist")}}
   logregexpurllist: |
     # Log regular expression URL list
     #
@@ -1825,6 +1839,45 @@ data:
     # e.g. to remove 'upgrade:' headers
     #"upgrade:.*$"->"X-E2G-IgnoreMe:"
 {{include "includeLists" (dict "Values" .Values "listName" "responseheaderregexplist")}}
+  semiexceptionsiteiplist: |+
+    #IP Sites in semi exception list
+    # These sites are made exception unless url is in banned list.
+    # IP site addresses
+    #
+    # Single IPs, ranges and subnets can be used,
+    # e.g.
+    # 192.168.0.1
+    # 10.0.0.1-10.0.0.3
+    # 10.0.0.0/24
+    #
+{{include "includeLists" (dict "Values" .Values "listName" "semiexceptionsiteiplist")}}
+  semiexceptionsitelist: |+
+    #Sites in semi exception list
+
+    # These sites are made exception unless url is in banned list.
+
+    #Don't bother with the www. or
+    #the http://
+    #
+    #These are specifically domains and are not URLs.
+    #For example 'foo.bar/porn/' is no good, you need
+    #to just have 'foo.bar'.
+    #
+    # IP must be put in semiexceptionsiteiplist
+    #
+    #.tld so for example you can match .gov for example
+
+
+    # Time limiting syntax:
+    # #time: <start hour> <start minute> <end hour> <end minute> <days>
+    # Example:
+    ##time: 9 0 17 0 01234
+    # Remove the first # from the line above to enable this list only from
+    # 9am to 5pm, Monday to Friday.
+
+    # NOTE: From v5 Blanket exceptions are now implimented using Storyboarding
+    # WARNING: Old style Blanket blocks in this file will be silently ignored
+{{include "includeLists" (dict "Values" .Values "listName" "semiexceptionsitelist")}}
   sslsiteregexplist: |+
     #SSL site modifying Regular Expressions
     #
